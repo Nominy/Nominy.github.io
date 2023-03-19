@@ -1,19 +1,20 @@
 import { useState } from "preact/hooks";
 
-const EndlessCarousel = ({ items }) => {
+const EndlessCarousel = ({ children, items }) => {
   const [currentIndex, setCurrentIndex] = useState(1);
   const [isTransitioning, setIsTransitioning] = useState(true);
 
-  const itemsWithClone = [items[items.length - 1], ...items, items[0]];
+  const itemsWithClone = items;
+  console.log(itemsWithClone)
 
   const handlePrevious = () => {
     setIsTransitioning(false);
-    setCurrentIndex((prevIndex) => prevIndex - 1);
+    setCurrentIndex(currentIndex - 1);
   };
 
   const handleNext = () => {
     setIsTransitioning(false);
-    setCurrentIndex((prevIndex) => prevIndex + 1);
+    setCurrentIndex(currentIndex + 1);
   };
 
   const handleEndTransition = () => {
@@ -38,11 +39,7 @@ const EndlessCarousel = ({ items }) => {
   return (
     <div className="carousel-container">
       <div style={styleWrapper} onTransitionEnd={handleEndTransition}>
-        {itemsWithClone.map((item, index) => (
-          <div key={index} className={"carousel-item"}>
-            {item}
-          </div>
-        ))}
+        { children }
       </div>
       <button
         className="carousel-previous"
