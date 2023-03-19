@@ -1,0 +1,16 @@
+---
+import EndlessCarousel from "./EndlessCarousel";
+import BlogPost from "./BlogPost.astro";
+
+const { posts } = Astro.props;
+
+const itemsWithClone = [posts[posts.length - 1], ...posts, posts[0]];
+---
+
+<EndlessCarousel client:load items={itemsWithClone}>
+{itemsWithClone.map((item: any, index: any) => 
+    <div key={index as any} className={"carousel-item"}>
+      <BlogPost url={`/posts/${item.slug}`} title={item.data.title}/>
+    </div>
+  )}
+</EndlessCarousel>
