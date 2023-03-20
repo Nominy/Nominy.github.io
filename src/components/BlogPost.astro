@@ -1,5 +1,55 @@
 ---
-const { url, title } = Astro.props;
+const { url, title, img } = Astro.props;
 ---
 
-<li><a href={url}>{title}</a></li>
+<div>
+  <li>
+    <a href={url}>
+      <p class="title">{title}</p>
+      <img src={img} />
+    </a>
+  </li>
+</div>
+
+<style>
+  li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-style: solid;
+    border-color: transparent;
+    transition: color 0.5s, border-color 0.2s ease-in-out;
+    border-radius: 5px;
+  }
+
+  li a img {
+    border-radius: 0 0 5px 5px;
+    padding: 0;
+    margin: 0;
+    width: 400px;
+    height: 200px;
+  }
+
+  li a {
+  color: #fff;
+  text-decoration: none;
+  border-color: transparent;
+  border-width: 10px;
+  border-radius: 5px;
+  width: 400px;
+  height: 200px;
+}
+  
+  li a p{
+    width: 400px;
+    font-family: sans-serif;
+    background-color: #9d00ff;
+    border-radius: 5px 5px 0 0;
+    margin: 0;
+    
+  }
+
+  li:hover {
+  border-color: #004cff;
+}
+</style>

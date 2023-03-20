@@ -8,9 +8,15 @@ const itemsWithClone = [posts[posts.length - 1], ...posts, posts[0]];
 ---
 
 <EndlessCarousel client:load items={itemsWithClone}>
-{itemsWithClone.map((item: any, index: any) => 
-    <div key={index as any} className={"carousel-item"}>
-      <BlogPost url={`/posts/${item.slug}`} title={item.data.title}/>
-    </div>
-  )}
+  {
+    itemsWithClone.map((item: any, index: number) => (
+      <div className={'carousel-box'}>
+        <BlogPost
+          url={`/posts/${item.slug}`}
+          title={item.title}
+          img={item.imageUrl}
+        />
+      </div>
+    ))
+  }
 </EndlessCarousel>

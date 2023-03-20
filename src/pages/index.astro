@@ -1,24 +1,35 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import BlogCarousel from '../components/BlogCarousel.astro';
+import BlogCarousel from "../components/BlogCarousel.astro";
 
 const pageTitle = "Home Page";
 
 const allPosts = await getCollection("posts");
+const recentPosts = allPosts.slice(0, 3).map(
+  ({
+    slug,
+    data: {
+      title,
+      image: { url },
+    },
+  }) => {
+    const imageUrl = url;
+    return({ slug, title, imageUrl });
+  }
+);
 ---
 
 <style>
-  .posts-grid{
+  .posts-grid {
     display: flex;
     flex-direction: row;
   }
-  a{
-      margin: 11px;
+  a {
+    margin: 11px;
   }
 </style>
 
 <BaseLayout pageTitle={pageTitle}>
-  <h2>My awesome blog subtitle</h2>
-  <BlogCarousel posts={allPosts} />
+  <BlogCarousel posts={recentPosts} />
 </BaseLayout>

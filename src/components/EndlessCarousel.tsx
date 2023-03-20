@@ -1,23 +1,28 @@
+import type { PreactDOMAttributes } from "preact";
 import { useState } from "preact/hooks";
 
-const EndlessCarousel = ({ children, items }) => {
-  const [currentIndex, setCurrentIndex] = useState(1);
-  const [isTransitioning, setIsTransitioning] = useState(true);
+interface EndlessCarouselProps {
+  children: PreactDOMAttributes[];
+  items: any[]; 
+}
 
-  const itemsWithClone = items;
-  console.log(itemsWithClone)
+const EndlessCarousel = ({ children, items }: EndlessCarouselProps) => {
+  const [currentIndex, setCurrentIndex] = useState<number>(1);
+  const [isTransitioning, setIsTransitioning] = useState<boolean>(true);
 
-  const handlePrevious = () => {
+  const itemsWithClone: any[] = items; 
+
+  const handlePrevious = (): void => {
     setIsTransitioning(false);
     setCurrentIndex(currentIndex - 1);
   };
 
-  const handleNext = () => {
+  const handleNext = (): void => {
     setIsTransitioning(false);
     setCurrentIndex(currentIndex + 1);
   };
 
-  const handleEndTransition = () => {
+  const handleEndTransition = (): void => {
     setIsTransitioning(true);
 
     if (currentIndex === 0) {
@@ -46,14 +51,12 @@ const EndlessCarousel = ({ children, items }) => {
         onClick={handlePrevious}
         disabled={!isTransitioning}
       >
-        Previous
       </button>
       <button
         className="carousel-next"
         onClick={handleNext}
         disabled={!isTransitioning}
       >
-        Next
       </button>
     </div>
   );
