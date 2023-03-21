@@ -6,15 +6,16 @@ const { posts } = Astro.props;
 
 const itemsWithClone = [posts[posts.length - 1], ...posts, posts[0]];
 ---
-
 <EndlessCarousel client:load items={itemsWithClone}>
   {
-    itemsWithClone.map((item: any, index: number) => (
-      <div className={'carousel-box'}>
+    itemsWithClone.map((post: any, index: number) => (
+      <div class='carousel-box' id={index.toString()}>
         <BlogPost
-          url={`/posts/${item.slug}`}
-          title={item.title}
-          img={item.imageUrl}
+          url={`/posts/${post.slug}`}
+          title={post.title}
+          img={post.imageUrl}
+          description={post.description}
+          pubDate={post.pubDate}
         />
       </div>
     ))

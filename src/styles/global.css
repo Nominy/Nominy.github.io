@@ -145,6 +145,6 @@ a:focus {
   text-align: center;
   display: flex;
   justify-content: center;
-  align-items: end;
+  align-items: center;
   background-color: #444;
 }

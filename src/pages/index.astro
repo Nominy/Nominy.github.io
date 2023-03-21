@@ -11,24 +11,17 @@ const recentPosts = allPosts.slice(0, 3).map(
     slug,
     data: {
       title,
+      pubDate,
+      description,
       image: { url },
     },
   }) => {
     const imageUrl = url;
-    return({ slug, title, imageUrl });
+    return({ slug, title, imageUrl, pubDate, description });
   }
 );
 ---
 
-<style>
-  .posts-grid {
-    display: flex;
-    flex-direction: row;
-  }
-  a {
-    margin: 11px;
-  }
-</style>
 
 <BaseLayout pageTitle={pageTitle}>
   <BlogCarousel posts={recentPosts} />

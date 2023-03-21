@@ -1,25 +1,28 @@
 ---
-const { url, title, img } = Astro.props;
+const { url, title, img, description, pubDate } = Astro.props;
 ---
 
-<div>
-  <li>
-    <a href={url}>
-      <p class="title">{title}</p>
+<li>
+  <a href={url}>
+    <p class="title">{title}</p>
+    <div class="image-container">
       <img src={img} />
-    </a>
-  </li>
-</div>
+      <p>{description}</p>
+      <p>{pubDate}</p>
+    </div>
+  </a>
+</li>
 
 <style>
   li {
     list-style: none;
     margin: 0;
     padding: 0;
-    border-style: solid;
-    border-color: transparent;
-    transition: color 0.5s, border-color 0.2s ease-in-out;
     border-radius: 5px;
+    border: 5px solid transparent;
+    background-clip: padding-box;
+    border-radius: 10px;
+    transition: border-color 0.3s ease-in-out;
   }
 
   li a img {
@@ -31,25 +34,59 @@ const { url, title, img } = Astro.props;
   }
 
   li a {
-  color: #fff;
-  text-decoration: none;
-  border-color: transparent;
-  border-width: 10px;
-  border-radius: 5px;
-  width: 400px;
-  height: 200px;
-}
-  
-  li a p{
+    color: #fff;
+    text-decoration: none;
+    border-color: transparent;
+    box-sizing: content-box;
+    display: flex;
+    flex-direction: column;
+  }
+
+  li a p {
     width: 400px;
     font-family: sans-serif;
     background-color: #9d00ff;
     border-radius: 5px 5px 0 0;
     margin: 0;
-    
   }
 
   li:hover {
-  border-color: #004cff;
-}
+    border-color: #8400d6;
+  }
+
+  .image-container {
+    display: inherit;
+    flex-direction: inherit;
+
+    
+    position: relative;
+    text-align: center;
+  }
+
+  .image-container p{
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    background: transparent;
+  }
+
+  .image-container:hover p:not(:hover){ 
+      opacity: 1;
+  }
+
+  
+  .image-container img{
+    transition: opacity 0.3s ease-in-out;
+    opacity: 1;
+  }
+
+  .image-container img:hover{
+    opacity: 0.5;
+  }
+
+  .image-container:first-of-type p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 </style>
