@@ -30,8 +30,9 @@ const { frontmatter } = Astro.props;
       ))
     }
   </div>
-
-  <slot />
+  <div class="md">
+    <slot />
+  </div>
 </BaseLayout>
 
 <style>
@@ -52,5 +53,9 @@ const { frontmatter } = Astro.props;
     padding: 0.5em 1em;
     font-size: 1.15em;
     background-color: #f8fcfd;
+  }
+
+  .md{
+    font-weight: 200;
   }
 </style>

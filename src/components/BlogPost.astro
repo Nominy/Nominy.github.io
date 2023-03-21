@@ -8,7 +8,15 @@ const { url, title, img, description, pubDate } = Astro.props;
     <div class="image-container">
       <img src={img} />
       <p>{description}</p>
-      <p>{pubDate}</p>
+      <p>
+        {
+          pubDate.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })
+        }
+      </p>
     </div>
   </a>
 </li>
@@ -44,7 +52,6 @@ const { url, title, img, description, pubDate } = Astro.props;
 
   li a p {
     width: 400px;
-    font-family: sans-serif;
     background-color: #9d00ff;
     border-radius: 5px 5px 0 0;
     margin: 0;
@@ -58,35 +65,40 @@ const { url, title, img, description, pubDate } = Astro.props;
     display: inherit;
     flex-direction: inherit;
 
-    
     position: relative;
     text-align: center;
   }
 
-  .image-container p{
+  .image-container img {
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .image-container p {
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
     background: transparent;
   }
 
-  .image-container:hover p:not(:hover){ 
-      opacity: 1;
-  }
-
-  
-  .image-container img{
-    transition: opacity 0.3s ease-in-out;
-    opacity: 1;
-  }
-
-  .image-container img:hover{
+  .image-container:hover img {
     opacity: 0.5;
   }
 
-  .image-container:first-of-type p {
+  .image-container:hover p {
+    opacity: 1;
+  }
+
+  .image-container p:first-of-type {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+  }
+
+  .image-container p:last-of-type {
+    position: absolute;
+    text-align: right;
+    bottom: 1px;
+    right: 1rem;
   }
 </style>

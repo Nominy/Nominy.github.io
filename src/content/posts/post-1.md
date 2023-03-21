@@ -1,8 +1,8 @@
 ---
-title: 'My First Blog Post'
+title: 'Initial commit. Let me give you a tour'
 pubDate: 2022-07-01
-description: 'This is the first post of my new Astro blog.'
-author: 'Astro Learner'
+description: 'Come on! Be right at home, wanderer...'
+author: 'Naft Nite'
 image:
     url: '/assets/post-1-image.png' 
     alt: 'The Astro logo with the word One.'

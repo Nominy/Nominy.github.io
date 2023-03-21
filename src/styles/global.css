@@ -1,6 +1,7 @@
 html {
   background-color: #f1f5f9;
   font-family: sans-serif;
+  font-weight: bold;
 }
 
 html.dark {
@@ -65,7 +66,7 @@ h1 {
 }
 
 .nav-links a:hover,
-a:focus {
+.nav-links a:focus {
   background-color: #ff9776;
 }
 
