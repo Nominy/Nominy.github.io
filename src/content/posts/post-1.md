@@ -1,22 +1,16 @@
 ---
-title: 'Initial commit. Let me give you a tour'
-pubDate: 2022-07-01
-description: 'Come on! Be right at home, wanderer...'
-author: 'Naft Nite'
+title: "Initial commit. Let me give you a tour"
+pubDate: 2023-03-22
+description: "Come on! Be right at home, wanderer..."
+author: "Naft Nite"
 image:
-    url: '/assets/post-1-image.png' 
-    alt: 'The Astro logo with the word One.'
-tags: ["astro", "blogging", "learning in public"]
+  url: "/assets/blog-development-header-image.png"
+  alt: "The logos of Astro, Github Pages and Preact"
+tags: ["astro", "blogging", "github pages", "preact"]
 ---
 
-## What I've accomplished
+## Howdy!
 
-1. **Installing Astro**: First, I created a new Astro project and set up my online accounts.
-
-2. **Making Pages**: I then learned how to make pages by creating new `.astro` files and placing them in the `src/pages/` folder.
-
-3. **Making Blog Posts**: This is my first blog post! I now have Astro pages and Markdown posts!
+I've always been eager to share my experience with other people.
 
 ## What's next
-
-I will finish the Astro tutorial, and then keep adding more posts. Watch this space for more to come.

@@ -7,7 +7,7 @@ const pageTitle = "Home Page";
 
 const allPosts = await getCollection("posts");
 const recentPosts = allPosts.slice(0, 3).map(
-({
+  ({
     slug,
     data: {
       title,
@@ -17,12 +17,22 @@ const recentPosts = allPosts.slice(0, 3).map(
     },
   }) => {
     const imageUrl = url;
-    return({ slug, title, imageUrl, pubDate, description });
+    return { slug, title, imageUrl, pubDate, description };
   }
 );
 ---
 
-
 <BaseLayout pageTitle={pageTitle}>
-  <BlogCarousel posts={recentPosts} />
+  <div class="blog-nav-container">
+    <BlogCarousel posts={recentPosts} />
+    <a href="/blog">Explore</a>
+  </div>
 </BaseLayout>
+
+<style>
+  .blog-nav-container {
+    text-align: center;
+    background-color: #444;
+    border-radius: 5px;
+  }
+</style>
