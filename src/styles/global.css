@@ -134,10 +134,8 @@ h1 {
 
 .carousel-box {
   flex: 1 0 100%;
-
   display: flex;
-  justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   background-color: #444;
   
 }

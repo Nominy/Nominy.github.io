@@ -1,9 +1,9 @@
 ---
 import { changeLanguage } from "i18next";
 import { getCollection } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
 
-changeLanguage("en");
+changeLanguage("ru");
 
 const allPosts = await getCollection("posts");
 const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];

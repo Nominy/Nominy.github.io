@@ -1,11 +1,11 @@
 ---
 import { getCollection } from "astro:content";
-import BaseLayout from "../layouts/BaseLayout.astro";
-import BlogCarousel from "../components/BlogCarousel.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BlogCarousel from "../../components/BlogCarousel.astro";
 import i18next, { t, changeLanguage } from "i18next";
 import { Trans } from "astro-i18next/components";
 
-changeLanguage("en");
+changeLanguage("ru");
 
 const pageTitle = "home-page";
 const allPosts = await getCollection("posts");

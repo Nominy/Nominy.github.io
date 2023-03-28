@@ -1,10 +1,10 @@
 ---
 import { changeLanguage } from "i18next";
 import { getCollection } from "astro:content";
-import BaseLayout from "../layouts/BaseLayout.astro";
-import BlogPost from "../components/BlogPost.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BlogPost from "../../components/BlogPost.astro";
 
-changeLanguage("en");
+changeLanguage("ru");
 
 const pageTitle = "My Astro Learning Blog";
 const allPosts = await getCollection("posts");
