@@ -4,7 +4,6 @@ import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import i18next, { t } from "i18next";
 import { LanguageSelector } from "astro-i18next/components";
-import { Trans } from "astro-i18next/components";
 
 const { pageTitle } = Astro.props;
 ---
@@ -15,12 +14,12 @@ const { pageTitle } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>{t(pageTitle)}</title>
+    <title>{t(`${pageTitle}.title`)}</title>
   </head>
   <body>
-    
+    <LanguageSelector showFlag={true} class="select" />
     <Header />
-    <h1>{t(pageTitle)}</h1>
+    {pageTitle && <h1>{t(`${pageTitle}.title`)}</h1>}
     <slot />
 
     <Footer />
@@ -30,3 +29,4 @@ const { pageTitle } = Astro.props;
     </script>
   </body>
 </html>
+

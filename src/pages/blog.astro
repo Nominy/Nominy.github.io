@@ -1,17 +1,20 @@
 ---
-import { changeLanguage } from "i18next";
+import i18next, { t, changeLanguage } from "i18next";
+import { Trans } from "astro-i18next/components";
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import BlogPost from "../components/BlogPost.astro";
 
 changeLanguage("en");
 
-const pageTitle = "My Astro Learning Blog";
+const pageTitle = "blog";
 const allPosts = await getCollection("posts");
 ---
 
-<BaseLayout pageTitle={pageTitle}>
-  <p>This is where I will post about my journey learning Astro.</p>
+<BaseLayout pageTitle={t(pageTitle)}>
+  <Trans i18nKey={"blog-head"}>
+    <p>This is where I will post about my journey learning Astro.</p>
+  </Trans>
   <ul>
     {
       allPosts.map((post) => (

@@ -4,11 +4,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import BlogCarousel from "../components/BlogCarousel.astro";
 import i18next, { t, changeLanguage } from "i18next";
 import { Trans } from "astro-i18next/components";
+import { localizePath } from "astro-i18next/index";
 
 changeLanguage("en");
 
-const pageTitle = "home-page";
-const allPosts = await getCollection("posts");
+const postsCollection: "posts" | "postsRu" = t("site.posts-collection");
+const pageTitle = "home";
+const allPosts = await getCollection(postsCollection);
 const recentPosts = allPosts.slice(0, 3).map(({ slug, data: { title, pubDate, description, image: { url }, }, }) => {
     const imageUrl = url;
     return { slug, title, imageUrl, pubDate, description };
@@ -17,9 +19,9 @@ const recentPosts = allPosts.slice(0, 3).map(({ slug, data: { title, pubDate, de
 
 <BaseLayout pageTitle={pageTitle}>
   <div class="blog-nav-container">
-    <BlogCarousel posts={recentPosts} />
-    <a href="/blog">
-      <Trans i18nKey="explore">
+    <BlogCarousel posts={recentPosts} postsCollection={postsCollection} />
+    <a href={localizePath("/blog")} >
+      <Trans i18nKey="home.explore">
         <p>Explore</p>
       </Trans>
     </a>

@@ -1,44 +1,46 @@
 ---
-import { changeLanguage } from "i18next";
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { t, changeLanguage } from "i18next";
+import { localizePath } from "astro-i18next";
 
 changeLanguage("en");
 
-const allPosts = await getCollection("posts");
+const postsCollection: "posts" | "postsRu" = t("site.posts-collection");
+const allPosts = await getCollection(postsCollection);
 const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
-const pageTitle = "Tag Index";
+const pageTitle = "tags";
 ---
-
-<style>
-    a {
-      color: #00539F;
-    }
-          
-    .tags {
-      display: flex; 
-      flex-wrap: wrap; 
-      margin: 0 auto;  
-    }
-  
-    .tag {
-      margin: 0.25em;
-      border: dotted 1px #a1a1a1;
-      border-radius: .5em;
-      padding: .5em 1em;
-      font-size: 1.15em;
-      background-color: #F8FCFD;
-    }
-  </style>
 
 <BaseLayout pageTitle={pageTitle}>
   <div class="tags">
     {
       tags.map((tag) => (
         <p class="tag">
-          <a href={`/tags/${tag}`}>{tag}</a>
+          <a href={localizePath(`/tags/${tag}`)}>{t(tag)}</a>
         </p>
       ))
     }
   </div>
 </BaseLayout>
+
+<style>
+  a {
+    color: #00539f;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+  }
+
+  .tag {
+    margin: 0.25em;
+    border: dotted 1px #a1a1a1;
+    border-radius: 0.5em;
+    padding: 0.5em 1em;
+    font-size: 1.15em;
+    background-color: #f8fcfd;
+  }
+</style>

@@ -1,8 +1,9 @@
 ---
+
 import EndlessCarousel from "./EndlessCarousel";
 import BlogPost from "./BlogPost.astro";
 
-const { posts } = Astro.props;
+const { postsCollection, posts } = Astro.props;
 
 const itemsWithClone = [posts[posts.length - 1], ...posts, posts[0]];
 ---
@@ -11,7 +12,7 @@ const itemsWithClone = [posts[posts.length - 1], ...posts, posts[0]];
     itemsWithClone.map((post: any, index: number) => (
       <div class='carousel-box' id={index.toString()}>
         <BlogPost
-          url={`/posts/${post.slug}`}
+          url={`/${postsCollection}/${post.slug}`}
           title={post.title}
           img={post.imageUrl}
           description={post.description}

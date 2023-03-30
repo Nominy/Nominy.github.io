@@ -1,4 +1,19 @@
 {
-  "home-page": "Home Page",
-  "explore": "Explore"
+  "site": {
+    "posts-collection": "posts"
+  },
+  "home": {
+    "title": "Home page",
+    "explore": "Explore more"
+  },
+  "blog":{
+    "title": "Blog",
+    "head": "This is where I will post software development projects."
+  },
+  "about":{
+    "title": "About"
+  },
+  "tags":{
+    "title": "Tags"
+  }
 }
