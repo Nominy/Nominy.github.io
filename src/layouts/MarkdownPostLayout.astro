@@ -46,7 +46,7 @@ const { frontmatter } = Astro.props;
         const pathSegments = currentURL.pathname.split("/");
         if(!pathSegments.includes("ru")){
           postsCollection = "postsRu"
-          pathSegments[0] = "ru"
+          pathSegments.unshift('ru');
         }else{
           pathSegments.splice(pathSegments.indexOf("ru"), 1)
         }
