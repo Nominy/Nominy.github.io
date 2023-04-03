@@ -43,15 +43,16 @@ const { frontmatter } = Astro.props;
       selector.addEventListener("change", () => {
         let postsCollection = "posts";
         const currentURL = new URL(window.location.href);
-        const pathSegments = currentURL.pathname.split("/");
-        if(!pathSegments.includes("ru")){
-          postsCollection = "postsRu"
-          pathSegments.unshift('ru');
-        }else{
-          pathSegments.splice(pathSegments.indexOf("ru"), 1)
+        let pathSegments = currentURL.pathname.split("/");
+        pathSegments = pathSegments.filter(Boolean);
+        if (!pathSegments.includes("ru")) {
+          postsCollection = "postsRu";
+          pathSegments.unshift("ru");
+        } else {
+          pathSegments.splice(pathSegments.indexOf("ru"), 1);
         }
         pathSegments[pathSegments.length - 2] = postsCollection;
-        const modifiedPathname = pathSegments.join('/');
+        const modifiedPathname = pathSegments.join("/");
         currentURL.pathname = modifiedPathname;
         window.location.href = currentURL.toString();
       });
