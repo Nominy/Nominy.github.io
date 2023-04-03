@@ -9,7 +9,7 @@ changeLanguage("en");
 const postsCollection: "posts" | "postsRu" = t("site.posts-collection");
 const allPosts = await getCollection(postsCollection);
 const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
-const pageTitle = "tags";
+const pageTitle = t("tags.title");
 ---
 
 <BaseLayout pageTitle={pageTitle}>

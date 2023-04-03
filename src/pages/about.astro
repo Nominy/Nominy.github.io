@@ -1,11 +1,11 @@
 ---
-import { changeLanguage } from "i18next";
+import { changeLanguage, t } from "i18next";
 import "../styles/global.css";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 changeLanguage("en");
 
-const pageTitle = "About Me";
+const pageTitle = t("about.title");
 const identity = {
     firstName: "Sarah",
     country: "Canada",

@@ -1,33 +1,35 @@
 ---
-import i18next, { t, changeLanguage } from "i18next";
-import { Trans } from "astro-i18next/components";
+import { changeLanguage, t } from "i18next";
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import BlogPost from "../components/BlogPost.astro";
+import { Trans } from "astro-i18next/components";
 
 changeLanguage("en");
 
-const pageTitle = "blog";
+const pageTitle = t("blog.title");
 const allPosts = await getCollection("posts");
 ---
 
-<BaseLayout pageTitle={t(pageTitle)}>
-  <Trans i18nKey={"blog-head"}>
-    <p>This is where I will post about my journey learning Astro.</p>
-  </Trans>
-  <ul>
-    {
-      allPosts.map((post) => (
-        <BlogPost
-          url={"/posts/" + post.slug}
-          title={post.data.title}
-          img={post.data.image.url}
-          description={post.data.description}
-          pubDate={post.data.pubDate}
-        />
-      ))
-    }
-  </ul>
+<BaseLayout pageTitle={pageTitle}>
+  <div>
+    <Trans i18nKey="blog.head">
+      <p>This is where I will post software development projects.</p>
+    </Trans>
+    <ul>
+      {
+        allPosts.map((post) => (
+          <BlogPost
+            url={`/posts/${post.slug}`}
+            title={post.data.title}
+            img={post.data.image.url}
+            description={post.data.description}
+            pubDate={post.data.pubDate}
+          />
+        ))
+      }
+    </ul>
+  </div>
 </BaseLayout>
 
 <style>

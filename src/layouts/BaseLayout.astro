@@ -14,12 +14,12 @@ const { pageTitle } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>{t(`${pageTitle}.title`)}</title>
+    <title>{t(pageTitle)}</title>
   </head>
   <body>
     <LanguageSelector showFlag={true} class="select" />
     <Header />
-    {pageTitle && <h1>{t(`${pageTitle}.title`)}</h1>}
+    <h1>{pageTitle}</h1>
     <slot />
 
     <Footer />

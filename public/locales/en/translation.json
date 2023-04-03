@@ -10,6 +10,9 @@
     "title": "Blog",
     "head": "This is where I will post software development projects."
   },
+  "blogpostLayout":{
+    "author": "Written by: "
+  },
   "about":{
     "title": "About"
   },

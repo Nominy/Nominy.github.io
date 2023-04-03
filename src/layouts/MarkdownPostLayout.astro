@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
+import { t } from "i18next";
 import { localizePath } from "astro-i18next";
+import i18next from "i18next";
 
 const { frontmatter } = Astro.props;
 ---
@@ -9,7 +11,7 @@ const { frontmatter } = Astro.props;
   <h1>{frontmatter.title}</h1>
   <p>
     {
-      frontmatter.pubDate.toLocaleDateString("en-US", {
+      frontmatter.pubDate.toLocaleDateString(i18next.language, {
         month: "2-digit",
         day: "2-digit",
         year: "numeric",
@@ -19,9 +21,9 @@ const { frontmatter } = Astro.props;
 
   <p><em>{frontmatter.description}</em></p>
 
-  <p>Written by: {frontmatter.author}</p>
+  <p>{t("blogpostLayout.author")}{frontmatter.author}</p>
 
-  <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
+  <img src={frontmatter.image.url} width="600" alt={frontmatter.image.alt} />
 
   <div class="tags">
     {
@@ -35,6 +37,26 @@ const { frontmatter } = Astro.props;
   <div class="md">
     <slot />
   </div>
+  <script>
+    const selector = document.querySelector("select");
+    if (selector !== null) {
+      selector.addEventListener("change", () => {
+        let postsCollection = "posts";
+        const currentURL = new URL(window.location.href);
+        const pathSegments = currentURL.pathname.split("/");
+        if(!pathSegments.includes("ru")){
+          postsCollection = "postsRu"
+          pathSegments[0] = "ru"
+        }else{
+          pathSegments.splice(pathSegments.indexOf("ru"), 1)
+        }
+        pathSegments[pathSegments.length - 2] = postsCollection;
+        const modifiedPathname = pathSegments.join('/');
+        currentURL.pathname = modifiedPathname;
+        window.location.href = currentURL.toString();
+      });
+    }
+  </script>
 </BaseLayout>
 
 <style>
@@ -57,7 +79,7 @@ const { frontmatter } = Astro.props;
     background-color: #f8fcfd;
   }
 
-  .md{
+  .md {
     font-weight: 200;
   }
 </style>

@@ -1,5 +1,5 @@
 ---
-
+import i18next  from "i18next";
 const { url, title, img, description, pubDate } = Astro.props;
 ---
 
@@ -11,7 +11,7 @@ const { url, title, img, description, pubDate } = Astro.props;
       <p>{description}</p>
       <p>
         {
-          pubDate.toLocaleDateString('en', {
+          pubDate.toLocaleDateString(i18next.language, {
             year: "numeric",
             month: "long",
             day: "numeric",
