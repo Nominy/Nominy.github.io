@@ -7,8 +7,7 @@ import i18next from "i18next";
 const { frontmatter } = Astro.props;
 ---
 
-<BaseLayout>
-  <h1>{frontmatter.title}</h1>
+<BaseLayout pageTitle={frontmatter.title}>
   <p>
     {
       frontmatter.pubDate.toLocaleDateString(i18next.language, {
