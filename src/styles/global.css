@@ -98,7 +98,7 @@ h1 {
   position: relative;
   display: grid;
   width: 100%;
-  min-height: 52vh;
+  min-height: 30vh;
   overflow-x: hidden;
   max-height: 60vh;
 }
@@ -141,6 +141,9 @@ h1 {
 }
 @media screen and (min-width: 636px) {
   .carousel-box {
-    padding: 10%;
+    padding: 3%;
+  }
+  .carousel-container{
+    min-height: 45vh;
   }
 }
