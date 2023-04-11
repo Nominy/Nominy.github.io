@@ -68,6 +68,8 @@
   window.localStorage.setItem("theme", theme as string);
 
   const handleToggleClick = () => {
+    const element = document.documentElement;
+
     const elements = document.querySelectorAll(
       ".carousel-box, .blog-nav-container, html"
     );
