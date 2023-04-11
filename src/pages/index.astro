@@ -30,9 +30,12 @@ const recentPosts = allPosts.slice(0, 3).map(({ slug, data: { title, pubDate, de
   <style>
     .blog-nav-container {
       text-align: center;
-      background-color: #222;
+      background-color: #c0c0c0;
       border-radius: 5px;
       overflow: hidden;
+    }
+    .blog-nav-container.dark{
+      background-color: #333;
     }
   </style>
 </BaseLayout>
