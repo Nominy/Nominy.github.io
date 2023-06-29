@@ -7,8 +7,9 @@ import { Trans } from "astro-i18next/components";
 
 changeLanguage("en");
 
+const postsCollection: "posts" | "postsRu" = t("site.posts-collection");
 const pageTitle = t("blog.title");
-const allPosts = await getCollection("posts");
+const allPosts = await getCollection(postsCollection);
 ---
 
 <BaseLayout pageTitle={pageTitle}>
