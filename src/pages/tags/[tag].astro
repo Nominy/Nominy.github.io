@@ -27,7 +27,7 @@ const { posts } = Astro.props;
 ---
 
 <BaseLayout>
-  <p>Posts tagged with {tag}</p>
+  <p>{t('dynamicTagPage.postsTaggedWith')}{t(`tags.${tag}`) !== `tags.${tag}` ? t(`tags.${tag}`) : tag}</p>
   <ul>
     {
       posts.map((post: any) => (

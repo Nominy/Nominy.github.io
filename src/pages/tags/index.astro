@@ -9,7 +9,7 @@ changeLanguage("en");
 const postsCollection: "posts" | "postsRu" = t("site.posts-collection");
 const allPosts = await getCollection(postsCollection);
 const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
-const pageTitle = t("tags.title");
+const pageTitle = t("tagsPage.title");
 ---
 
 <BaseLayout pageTitle={pageTitle}>
@@ -17,7 +17,7 @@ const pageTitle = t("tags.title");
     {
       tags.map((tag) => (
         <p class="tag">
-          <a href={localizePath(`/tags/${tag}`)}>{t(tag)}</a>
+          <a href={localizePath(`/tags/${tag}`)}>{t(`tags.${tag}`) !== `tags.${tag}` ? t(`tags.${tag}`) : tag}</a>
         </p>
       ))
     }

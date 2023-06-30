@@ -6,7 +6,7 @@ author: "Нафт Найт"
 image:
   url: "/assets/blog-development-header-image.png"
   alt: "Логотипы Astro, Github Pages и Preact"
-tags: ["astro", "ведение блога", "github pages", "preact"]
+tags: ["astro", "blogging", "github pages", "preact"]
 ---
 
 ## Привет!

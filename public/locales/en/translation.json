@@ -16,7 +16,13 @@
   "about":{
     "title": "About"
   },
-  "tags":{
+  "tagsPage":{
     "title": "Tags"
+  },
+  "tags":{
+    "blogging": "blogging"
+  },
+  "dynamicTagPage":{
+    "postsTaggedWith": "Posts with this tag: "
   }
 }

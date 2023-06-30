@@ -28,7 +28,7 @@ const { frontmatter } = Astro.props;
     {
       frontmatter.tags.map((tag: any) => (
         <p class="tag">
-          <a href={localizePath(`/tags/${tag}`)}>{tag}</a>
+            <a href={localizePath(`/tags/${tag}`)}>{t(`tags.${tag}`) !== `tags.${tag}` ? t(`tags.${tag}`) : tag}</a>
         </p>
       ))
     }

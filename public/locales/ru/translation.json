@@ -14,9 +14,15 @@
     "author": "Автор: "
   },
   "about":{
-    "title": "Про меня"
+    "title": "О себе"
+  },
+  "tagsPage":{
+    "title": "Ключевые слова"
   },
   "tags":{
-    "title": "Ключевые слова"
+    "blogging": "Ведение блога"
+  },
+  "dynamicTagPage":{
+    "postsTaggedWith": "Посты с соответствующим тегом: "
   }
 }
