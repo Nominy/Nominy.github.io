@@ -1,19 +1,18 @@
 ---
-
-import EndlessCarousel from "./EndlessCarousel";
+import EndlessCarousel from "./EndlessCarousel/EndlessCarousel";
 import BlogPost from "./BlogPost.astro";
-import { localizePath } from "astro-i18next";
 
 const { postsCollection, posts } = Astro.props;
 
 const itemsWithClone = [posts[posts.length - 1], ...posts, posts[0]];
 ---
-<EndlessCarousel client:load items={itemsWithClone}>
+
+<EndlessCarousel client:load length={itemsWithClone.length}>
   {
     itemsWithClone.map((post: any, index: number) => (
-      <div class='carousel-box' id={index.toString()}>
+      <div class="carousel-box" id={index.toString()}>
         <BlogPost
-          url={localizePath(`/${postsCollection}/${post.slug}`)}
+          url={`/${postsCollection}/${post.slug}`}
           title={post.title}
           img={post.imageUrl}
           description={post.description}
@@ -23,3 +22,41 @@ const itemsWithClone = [posts[posts.length - 1], ...posts, posts[0]];
     ))
   }
 </EndlessCarousel>
+<a href={"/blog"}>
+  <p>Explore</p>
+</a>
+
+<style>
+  a {
+    position: relative;
+    text-align: center;
+    bottom: 2rem;
+    text-shadow: 1px 1px 2px black;
+  }
+
+  .carousel-box {
+    flex: 1 0 100%;
+    padding: 2rem;
+  }
+
+  .carousel-box.dark {
+    background-color: #444;
+  }
+</style>
+
+<script lang="ts">
+  $(function() {
+    let minHeight = Infinity;
+
+    $('.carousel-box').each(function() {
+      const height = $(this).outerHeight();
+      minHeight = Math.min(minHeight, height);
+    });
+
+    if (minHeight !== Infinity) {
+      $('.carousel-box').css('height', minHeight);
+    }
+  });
+</script>
+
+

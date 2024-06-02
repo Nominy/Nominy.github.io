@@ -1,6 +1,6 @@
 {
   "site": {
-    "posts-collection": "posts"
+    "posts": "posts/en"
   },
   "home": {
     "title": "Home page",

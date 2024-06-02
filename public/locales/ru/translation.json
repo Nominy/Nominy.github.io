@@ -1,6 +1,6 @@
 {
   "site": {
-    "posts-collection": "postsRu"
+    "posts": "posts/ru"
   },
   "home": {
     "title": "Домашняя страница",

@@ -2,29 +2,26 @@
 import "../styles/global.css";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
-import i18next, { t } from "i18next";
-import { LanguageSelector } from "astro-i18next/components";
 
 const { pageTitle } = Astro.props;
 ---
 
-<html lang={i18next.language}>
+<html lang={'en'}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>{t(pageTitle)}</title>
+    <title>{pageTitle}</title>
   </head>
   <body>
-    <LanguageSelector showFlag={true} class="select" />
     <Header />
     <h1>{pageTitle}</h1>
     <slot />
 
     <Footer />
 
-    <script>
+    <script is:inline src="https://code.jquery.com/jquery-3.7.0.min.js">
       import "../scripts/menu.js";
     </script>
   </body>

@@ -1,28 +1,25 @@
 ---
-import { changeLanguage, t } from "i18next";
+import { changeLanguage } from "i18next";
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import BlogPost from "../../components/BlogPost.astro";
-import { Trans } from "astro-i18next/components";
-import { localizePath } from "astro-i18next";
+import t from "astro-i18next";
 
 changeLanguage("ru");
 
-const postsCollection: "posts" | "postsRu" = t("site.posts-collection");
-const pageTitle = t("blog.title");
+const postsCollection: "posts/ru" | "posts/ru" = t("posts");
+const pageTitle = `Blog`;
 const allPosts = await getCollection(postsCollection);
 ---
 
 <BaseLayout pageTitle={pageTitle}>
   <div>
-    <Trans i18nKey="blog.head">
-      <p>This is where I will post software development projects.</p>
-    </Trans>
+      <p>This is where I will post about software development projects.</p>
     <ul>
       {
         allPosts.map((post) => (
           <BlogPost
-            url={localizePath(`/${postsCollection}/${post.slug}`)}
+            url={`/${postsCollection}/${post.slug}`}
             title={post.data.title}
             img={post.data.image.url}
             description={post.data.description}

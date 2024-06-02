@@ -1,17 +1,16 @@
 ---
-import i18next  from "i18next";
 const { url, title, img, description, pubDate } = Astro.props;
 ---
 
-<li>
-  <a href={url}>
-    <p class="title">{title}</p>
-    <div class="image-container">
-      <img src={img} />
-      <p>{description}</p>
-      <p>
+<li class="list-item">
+  <a href={url} class="list-item__link">
+    <p class="list-item__title">{title}</p>
+    <div class="list-item__image-container">
+      <img src={img} class="list-item__image" />
+      <p class="list-item__description">{description}</p>
+      <p class="list-item__date">
         {
-          pubDate.toLocaleDateString(i18next.language, {
+          pubDate.toLocaleDateString('en', {
             year: "numeric",
             month: "long",
             day: "numeric",
@@ -23,90 +22,86 @@ const { url, title, img, description, pubDate } = Astro.props;
 </li>
 
 <style>
-  li {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-radius: 5px;
-    border: 5px solid transparent;
-    border-radius: 10px;
-    transition: border-color 0.3s ease-in-out;
-    box-sizing: border-box;
-  }
+.list-item {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 5px;
+  border: 5px solid transparent;
+  border-radius: 10px;
+  transition: border-color 0.3s ease-in-out;
+  box-sizing: border-box;
+}
 
-  li a img {
-    
-    border-radius: 0 0 5px 5px;
-    padding: 0;
-    margin: 0;
-  }
+.list-item:hover {
+  border-color: #8400d6;
+}
 
-  li a {
-    color: #fff;
-    text-decoration: none;
-    border-color: transparent;
-    box-sizing: content-box;
-    display: flex;
-    flex-direction: column;
-  }
+.list-item__link {
+  color: #fff;
+  text-decoration: none;
+  border-color: transparent;
+  box-sizing: content-box;
+  display: flex;
+  flex-direction: column;
+}
 
-  li a p {
-    font-size: 2vh;
-    text-align: center;
-    background-color: #9d00ff;
-    border-radius: 5px 5px 0 0;
-    margin: 0;
-  }
+.list-item__title {
+  font-size: 1rem;
+  text-align: center;
+  background-color: #9d00ff;
+  border-radius: 5px 5px 0 0;
+  margin: 0;
+}
 
-  li:hover {
-    border-color: #8400d6;
-  }
+.list-item__image-container {
+  display: inherit;
+  flex-direction: inherit;
+  position: relative;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
 
-  .image-container {
-    display: inherit;
-    flex-direction: inherit;
+.list-item__image {
+  max-width: 100%;
+  max-height: 100%;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 0 0 5px 5px;
+  padding: 0;
+  margin: 0;
+}
 
+.list-item__description, 
+.list-item__date {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  background: transparent;
+  text-shadow: 2px 2px 2px #00000080;
+}
 
-    position: relative;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-  }
+.list-item:hover .list-item__image {
+  opacity: 0.5;
+}
 
-  .image-container img {
-    max-width: 100%;
-    max-height: 100%;
-    opacity: 1;
-    transition: opacity 0.3s ease-in-out;
-  }
+.list-item:hover .list-item__description,
+.list-item:hover .list-item__date {
+  opacity: 1;
+}
 
-  .image-container p {
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    background: transparent;
-    text-shadow: 2px 2px 2px #00000080;
-  }
+.list-item__description {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
-  .image-container:hover img {
-    opacity: 0.5;
-  }
-
-  .image-container:hover p {
-    opacity: 1;
-  }
-
-  .image-container p:first-of-type {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .image-container p:last-of-type {
-    position: absolute;
-    text-align: right;
-    bottom: 1px;
-    right: 1rem;
-  }
+.list-item__date {
+  position: absolute;
+  text-align: right;
+  bottom: 1px;
+  right: 1rem;
+}
 
 </style>

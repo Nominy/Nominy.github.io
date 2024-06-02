@@ -1,15 +1,14 @@
 ---
+import { changeLanguage } from "i18next";
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { t, changeLanguage } from "i18next";
-import { localizePath } from "astro-i18next";
 
 changeLanguage("en");
 
-const postsCollection: "posts" | "postsRu" = t("site.posts-collection");
+const postsCollection: "posts" | "postsRu" = "posts";
 const allPosts = await getCollection(postsCollection);
 const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
-const pageTitle = t("tagsPage.title");
+const pageTitle = "Tags";
 ---
 
 <BaseLayout pageTitle={pageTitle}>
@@ -17,7 +16,7 @@ const pageTitle = t("tagsPage.title");
     {
       tags.map((tag) => (
         <p class="tag">
-          <a href={localizePath(`/tags/${tag}`)}>{t(`tags.${tag}`) !== `tags.${tag}` ? t(`tags.${tag}`) : tag}</a>
+          <a href={`/tags/${tag}`}>{tag}</a>
         </p>
       ))
     }

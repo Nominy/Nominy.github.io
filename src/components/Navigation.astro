@@ -1,14 +1,12 @@
 ---
-import { t } from "i18next";
-import { localizePath } from "astro-i18next";
 
 
 ---
 
 <div class="nav-links">
-  <a href={localizePath("/")}>{t("home.title")}</a>
-  <a href={localizePath("/about")}>{t("about.title")}</a>
-  <a href={localizePath("/blog")}>{t("blog.title")}</a>
-  <a href={localizePath("/tags")}>{t("tagsPage.title")}</a>
+  <a href={"/"}>{"Home"}</a>
+  <a href={"/about"}>{"About"}</a>
+  <a href={"/blog"}>{"Blog"}</a>
+  <a href={"/tags"}>{"Tags"}</a>
 </div>
 

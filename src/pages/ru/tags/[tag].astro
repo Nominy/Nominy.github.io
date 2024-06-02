@@ -1,15 +1,14 @@
 ---
-import { t, changeLanguage } from "i18next";
-import { localizePath } from "astro-i18next";
+import { changeLanguage } from "i18next";
 import BlogPost from "../../../components/BlogPost.astro";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
 changeLanguage("ru");
 
-const postsCollection: "posts" | "postsRu" = t("site.posts-collection");
+const postsCollection: "posts" | "postsRu" = "posts";
 export async function getStaticPaths() {
-    const postsCollection: "posts" | "postsRu" = t("site.posts-collection");
+    const postsCollection: "posts" | "postsRu" = "posts";
     const allPosts = await getCollection(postsCollection);
     const uniqueTags = [
         ...new Set(allPosts.map((post) => post.data.tags).flat()),
@@ -27,12 +26,12 @@ const { posts } = Astro.props;
 ---
 
 <BaseLayout>
-  <p>{t('dynamicTagPage.postsTaggedWith')}{t(`tags.${tag}`) !== `tags.${tag}` ? t(`tags.${tag}`) : tag}</p>
+  <p>{'Tagged'}{tag}</p>
   <ul>
     {
       posts.map((post: any) => (
         <BlogPost
-          url={localizePath(`/${postsCollection}/${post.slug}`)}
+          url={`/${postsCollection}/${post.slug}`}
           title={post.data.title}
           img={post.data.image.url}
           description={post.data.description}

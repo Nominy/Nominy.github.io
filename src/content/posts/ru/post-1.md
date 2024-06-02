@@ -2,7 +2,7 @@
 title: "Позвольте мне помочь вам осмотреться"
 pubDate: 2023-03-22
 description: "Давай же! Будь как дома, путник..."
-author: "Нафт Найт"
+author: "Нафт Сан"
 image:
   url: "/assets/blog-development-header-image.png"
   alt: "Логотипы Astro, Github Pages и Preact"

@@ -2,7 +2,7 @@
 title: "Initial commit. Let me give you a tour"
 pubDate: 2023-03-22
 description: "Come on! Be right at home, wanderer..."
-author: "Naft Nite"
+author: "Naft San"
 image:
   url: "/assets/blog-development-header-image.png"
   alt: "The logos of Astro, Github Pages and Preact"
