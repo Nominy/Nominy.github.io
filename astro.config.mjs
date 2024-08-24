@@ -6,5 +6,5 @@ import preact from "@astrojs/preact";
 // https://astro.build/config
 export default defineConfig({
   integrations: [preact(), astroI18next()],
-  site: 'https://Nominy.github.io',
+  site: 'https://www.crystalgate.life',
 });
