@@ -348,6 +348,54 @@
                 window.gmod.sendGameResult(result);
             }
         }
+            function SimulateMouseMove(x, y) {
+        // Synthesize a real mousemove
+        let c = document.getElementById("gameCanvas");
+        let evt = new MouseEvent('mousemove', {
+            clientX: x,    // (the location in canvas space)
+            clientY: y,
+            bubbles: true
+        });
+        c.dispatchEvent(evt);
+    }
+
+    function SimulateMouseDown(x, y, button) {
+        let c = document.getElementById("gameCanvas");
+        let evt = new MouseEvent('mousedown', {
+            clientX: x,
+            clientY: y,
+            button: button, // 0=left, 1=middle, 2=right
+            bubbles: true
+        });
+        c.dispatchEvent(evt);
+    }
+
+    function SimulateMouseUp(x, y, button) {
+        let c = document.getElementById("gameCanvas");
+        let evt = new MouseEvent('mouseup', {
+            clientX: x,
+            clientY: y,
+            button: button,
+            bubbles: true
+        });
+        c.dispatchEvent(evt);
+    }
+
+    function SimulateKeyDown(keyName) {
+        let evt = new KeyboardEvent('keydown', {
+            key: keyName,
+            bubbles: true
+        });
+        document.dispatchEvent(evt);
+    }
+
+    function SimulateKeyUp(keyName) {
+        let evt = new KeyboardEvent('keyup', {
+            key: keyName,
+            bubbles: true
+        });
+        document.dispatchEvent(evt);
+    }
     </script>
 </body>
 </html>
