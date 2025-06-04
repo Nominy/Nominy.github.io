@@ -20,7 +20,10 @@
     "title": "Ключевые слова"
   },
   "tags":{
-    "blogging": "Ведение блога"
+    "blogging": "Ведение блога",
+    "astro": "Astro",
+    "github pages": "Github Pages",
+    "preact": "Preact"
   },
   "dynamicTagPage":{
     "postsTaggedWith": "Посты с соответствующим тегом: "
