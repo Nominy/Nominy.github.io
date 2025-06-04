@@ -6,6 +6,6 @@ import preact from "@astrojs/preact";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [preact(), astroI18next({ config: astroI18nextConfig })],
+  integrations: [preact(), astroI18next({ configPath: './astro-i18next.config.cjs' })],
   site: 'https://www.crystalgate.life',
 });
