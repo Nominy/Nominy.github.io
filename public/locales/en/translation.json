@@ -20,7 +20,10 @@
     "title": "Tags"
   },
   "tags":{
-    "blogging": "blogging"
+    "blogging": "blogging",
+    "astro": "astro",
+    "github pages": "github pages",
+    "preact": "preact"
   },
   "dynamicTagPage":{
     "postsTaggedWith": "Posts with this tag: "
