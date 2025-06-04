@@ -20,6 +20,7 @@
   #themeToggle {
     border: 0;
     background: none;
+    cursor: pointer;
   }
   .sun {
     fill: black;
@@ -33,6 +34,13 @@
   }
   :global(.dark) .moon {
     fill: white;
+  }
+
+  #themeToggle svg {
+    transition: transform 0.5s ease;
+  }
+  #themeToggle.rotate svg {
+    transform: rotate(360deg);
   }
 </style>
 
@@ -69,6 +77,12 @@
 
   const handleToggleClick = () => {
     const element = document.documentElement;
+
+    const button = document.getElementById("themeToggle");
+    if (button) {
+      button.classList.add("rotate");
+      setTimeout(() => button.classList.remove("rotate"), 500);
+    }
 
     const elements = document.querySelectorAll(
       ".carousel-box, .blog-nav-container, html"
