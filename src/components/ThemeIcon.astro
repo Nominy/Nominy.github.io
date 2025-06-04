@@ -45,58 +45,31 @@
 </style>
 
 <script>
-  const theme = (() => {
-    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
-      return localStorage.getItem("theme");
-    }
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      return "dark";
-    }
-    return "light";
-  })();
+  const theme =
+    localStorage.getItem('theme') ||
+    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
-  const elements = document.querySelectorAll(
-    ".carousel-box, .blog-nav-container"
-  );
-
-  elements.forEach((element) => {
-    if (theme === "light") {
-      element.classList.remove("dark");
-    } else {
-      element.classList.add("dark");
-    }
-  });
-
-  if (theme === "light") {
-    document.documentElement.classList.remove("dark");
-  } else {
-    document.documentElement.classList.add("dark");
-  }
-
-  window.localStorage.setItem("theme", theme as string);
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+  localStorage.setItem('theme', theme);
 
   const handleToggleClick = () => {
-    const element = document.documentElement;
-
-    const button = document.getElementById("themeToggle");
+    const button = document.getElementById('themeToggle');
     if (button) {
-      button.classList.add("rotate");
-      setTimeout(() => button.classList.remove("rotate"), 500);
+      button.classList.add('rotate');
+      setTimeout(() => button.classList.remove('rotate'), 500);
     }
 
-    const elements = document.querySelectorAll(
-      ".carousel-box, .blog-nav-container, html"
-    );
+    const isDark = document.documentElement.classList.toggle('dark');
 
-    elements.forEach((element) => {
-      element.classList.toggle("dark");
-    });
+    document
+      .querySelectorAll('.carousel-box, .blog-nav-container')
+      .forEach((el) => el.classList.toggle('dark', isDark));
 
-    const isDark = element.classList.contains("dark");
-    localStorage.setItem("theme", isDark ? "dark" : "light");
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
   };
 
   document
-    .getElementById("themeToggle")!
-    .addEventListener("click", handleToggleClick);
+    .getElementById('themeToggle')
+    .addEventListener('click', handleToggleClick);
 </script>
+

@@ -61,7 +61,7 @@ h1 {
   animation: fadeIn 0.8s ease-in-out;
 }
 
-.blog-nav-container.dark {
+.dark .blog-nav-container {
   background-color: #222;
 }
 
@@ -179,7 +179,7 @@ h1 {
   transition: background-color 0.3s ease;
 }
 
-.carousel-box.dark {
+.dark .carousel-box {
   background-color: #444;
 }
 
