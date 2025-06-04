@@ -45,55 +45,22 @@
 </style>
 
 <script>
-  const theme = (() => {
-    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
-      return localStorage.getItem("theme");
-    }
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      return "dark";
-    }
-    return "light";
-  })();
+  const theme =
+    localStorage.getItem('theme') ||
+    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
-  const elements = document.querySelectorAll(
-    ".carousel-box, .blog-nav-container"
-  );
-
-  elements.forEach((element) => {
-    if (theme === "light") {
-      element.classList.remove("dark");
-    } else {
-      element.classList.add("dark");
-    }
-  });
-
-  if (theme === "light") {
-    document.documentElement.classList.remove("dark");
-  } else {
-    document.documentElement.classList.add("dark");
-  }
-
-  window.localStorage.setItem("theme", theme as string);
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+  localStorage.setItem('theme', theme);
 
   const handleToggleClick = () => {
-    const element = document.documentElement;
-
     const button = document.getElementById("themeToggle");
     if (button) {
       button.classList.add("rotate");
       setTimeout(() => button.classList.remove("rotate"), 500);
     }
 
-    const elements = document.querySelectorAll(
-      ".carousel-box, .blog-nav-container, html"
-    );
-
-    elements.forEach((element) => {
-      element.classList.toggle("dark");
-    });
-
-    const isDark = element.classList.contains("dark");
-    localStorage.setItem("theme", isDark ? "dark" : "light");
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
   };
 
   document
