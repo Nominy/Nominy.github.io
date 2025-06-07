@@ -18,9 +18,9 @@ const { pageTitle } = Astro.props;
       (function () {
         const stored = localStorage.getItem('theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (stored === 'dark' || (!stored && prefersDark)) {
-          document.documentElement.classList.add('dark');
-          localStorage.setItem('theme', 'dark');
+        if (stored === 'light' || (!stored && !prefersDark)) {
+          document.documentElement.classList.add('light');
+          localStorage.setItem('theme', 'light');
         }
       })();
     </script>
