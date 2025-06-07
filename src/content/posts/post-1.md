@@ -13,4 +13,16 @@ tags: ["astro", "blogging", "github pages", "preact"]
 
 I've always been eager to share my experience with other people.
 
+This website finally gives me a dedicated place to do so. It is built with
+[Astro](https://astro.build/) and uses [Preact](https://preactjs.com/) for the
+interactive bits. Everything is served directly from
+[GitHub Pages](https://pages.github.com/), so the entire source code is
+available for you to explore.
+
+Here I plan to document my pet projects, experiments and thoughts on web
+development. The site itself is a small showcase of what Astro can do: it uses
+internationalisation support, light and dark themes and a responsive layout.
+
+Feel free to poke around, read the code and let me know what you think.
+
 ## What's next
