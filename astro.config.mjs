@@ -1,11 +1,11 @@
 import { defineConfig } from 'astro/config';
 
-import astroI18next from "astro-i18next";
-import astroI18nextConfig from "./astro-i18next.config.cjs";
 import preact from "@astrojs/preact";
+import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [preact(), astroI18next({ configPath: './astro-i18next.config.cjs' })],
+  integrations: [preact(), tailwind()],
+  i18n: { locales: ["en", "ru"], defaultLocale: "en" },
   site: 'https://www.crystalgate.life',
 });

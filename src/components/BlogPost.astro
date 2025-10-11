@@ -1,5 +1,4 @@
 ---
-import i18next  from "i18next";
 const { url, title, img, description, pubDate } = Astro.props;
 ---
 
@@ -7,17 +6,9 @@ const { url, title, img, description, pubDate } = Astro.props;
   <a href={url}>
     <p class="title">{title}</p>
     <div class="image-container">
-      <img src={img} />
+      <img src={img} loading="lazy" decoding="async" />
       <p>{description}</p>
-      <p>
-        {
-          pubDate.toLocaleDateString(i18next.language, {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })
-        }
-      </p>
+      <p>{pubDate.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })}</p>
     </div>
   </a>
 </li>

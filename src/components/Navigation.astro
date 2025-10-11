@@ -1,14 +1,25 @@
 ---
-import { t } from "i18next";
-import { localizePath } from "astro-i18next";
+const pathname = Astro.url.pathname;
+const isRu = pathname.startsWith('/ru');
+const prefix = isRu ? '/ru' : '';
 
-
+const links = [
+  { href: `${prefix}/`, label: isRu ? 'Главная' : 'Home' },
+  { href: `${prefix}/about`, label: isRu ? 'Обо мне' : 'About' },
+  { href: `${prefix}/blog`, label: isRu ? 'Блог' : 'Blog' },
+  { href: `${prefix}/tags`, label: isRu ? 'Теги' : 'Tags' },
+];
 ---
 
-<div class="nav-links">
-  <a href={localizePath("/")}>{t("home.title")}</a>
-  <a href={localizePath("/about")}>{t("about.title")}</a>
-  <a href={localizePath("/blog")}>{t("blog.title")}</a>
-  <a href={localizePath("/tags")}>{t("tagsPage.title")}</a>
+<div id="primary-nav" class="nav-links hidden md:flex md:items-center md:gap-1">
+  {links.map(link => (
+    <a 
+      href={link.href} 
+      class="px-3 py-2 font-bold text-sm hover:bg-[var(--accent)] hover:text-[var(--bg)] rounded-md transition-colors"
+      aria-current={pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href)) ? 'page' : undefined}
+    >
+      {link.label}
+    </a>
+  ))}
 </div>
 

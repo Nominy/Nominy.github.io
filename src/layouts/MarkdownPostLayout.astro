@@ -1,85 +1,233 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
-import { t } from "i18next";
-import { localizePath } from "astro-i18next";
-import i18next from "i18next";
 
 const { frontmatter } = Astro.props;
+const pathname = Astro.url.pathname;
+const isRu = pathname.startsWith('/ru');
 ---
 
 <BaseLayout pageTitle={frontmatter.title}>
-  <p>
-    {
-      frontmatter.pubDate.toLocaleDateString(i18next.language, {
-        month: "2-digit",
-        day: "2-digit",
-        year: "numeric",
-      })
-    }
-  </p>
+  <article class="max-w-3xl mx-auto">
+    <!-- Header Section -->
+    <header class="mb-8 pb-8 border-b-4 border-[var(--border)]">
+      <div class="flex flex-wrap gap-3 mb-4">
+        {frontmatter.tags.map((tag: any) => (
+          <a 
+            href={isRu ? `/ru/tags/${tag}` : `/tags/${tag}`}
+            class="px-3 py-1 text-sm font-bold border-2 border-[var(--border)] rounded hover:bg-[var(--accent)] hover:text-[var(--bg)] transition-colors capitalize"
+          >
+            {tag}
+          </a>
+        ))}
+      </div>
+      
+      <div class="flex items-center gap-4 text-sm opacity-70 mb-4">
+        <time datetime={frontmatter.pubDate.toISOString()}>
+          {frontmatter.pubDate.toLocaleDateString(isRu ? 'ru' : 'en', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          })}
+        </time>
+        <span>•</span>
+        <span>{frontmatter.author}</span>
+      </div>
+      
+      <p class="text-xl md:text-2xl opacity-80 italic leading-relaxed">
+        {frontmatter.description}
+      </p>
+    </header>
 
-  <p><em>{frontmatter.description}</em></p>
+    <!-- Featured Image -->
+    <div class="mb-12 overflow-hidden rounded-lg border-4 border-[var(--border)] shadow-[6px_6px_0_0_var(--border)]">
+      <img 
+        src={frontmatter.image.url} 
+        alt={frontmatter.image.alt} 
+        class="w-full h-auto"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
 
-  <p>{t("blogpostLayout.author")}{frontmatter.author}</p>
+    <!-- Article Content -->
+    <div class="prose prose-lg">
+      <slot />
+    </div>
 
-  <img src={frontmatter.image.url} width="600" alt={frontmatter.image.alt} />
-
-  <div class="tags">
-    {
-      frontmatter.tags.map((tag: any) => (
-        <p class="tag">
-            <a href={localizePath(`/tags/${tag}`)}>{t(`tags.${tag}`) !== `tags.${tag}` ? t(`tags.${tag}`) : tag}</a>
-        </p>
-      ))
-    }
-  </div>
-  <div class="md">
-    <slot />
-  </div>
-  <script>
-    const selector = document.querySelector("select");
-    if (selector !== null) {
-      selector.addEventListener("change", () => {
-        let postsCollection = "posts";
-        const currentURL = new URL(window.location.href);
-        let pathSegments = currentURL.pathname.split("/");
-        pathSegments = pathSegments.filter(Boolean);
-        if (!pathSegments.includes("ru")) {
-          postsCollection = "postsRu";
-          pathSegments.unshift("ru");
-        } else {
-          pathSegments.splice(pathSegments.indexOf("ru"), 1);
-        }
-        pathSegments[pathSegments.length - 2] = postsCollection;
-        const modifiedPathname = pathSegments.join("/");
-        currentURL.pathname = modifiedPathname;
-        window.location.href = currentURL.toString();
-      });
-    }
-  </script>
+    <!-- Back to Blog Link -->
+    <div class="mt-12 pt-8 border-t-4 border-[var(--border)]">
+      <a 
+        href={isRu ? '/ru/blog' : '/blog'}
+        class="inline-flex items-center gap-2 px-6 py-3 font-bold border-4 border-[var(--border)] rounded-lg hover:bg-[var(--accent)] hover:text-[var(--bg)] shadow-[3px_3px_0_0_var(--border)] hover:shadow-[5px_5px_0_0_var(--border)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+      >
+        ← {isRu ? 'Назад к блогу' : 'Back to Blog'}
+      </a>
+    </div>
+  </article>
 </BaseLayout>
 
 <style>
-  a {
-    color: #00539f;
+  .prose {
+    color: var(--fg);
   }
 
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 auto;
+  .prose :global(h2) {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--fg);
   }
 
-  .tag {
-    margin: 0.25em;
-    border: dotted 1px #a1a1a1;
-    border-radius: 0.5em;
-    padding: 0.5em 1em;
-    font-size: 1.15em;
-    background-color: #f8fcfd;
+  .prose :global(h3) {
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+    color: var(--fg);
   }
 
-  .md {
-    font-weight: 200;
+  .prose :global(h4) {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--fg);
+  }
+
+  .prose :global(p) {
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+    font-size: 1.125rem;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin: 1.5rem 0;
+    padding-left: 2rem;
+  }
+
+  .prose :global(li) {
+    margin-bottom: 0.75rem;
+    line-height: 1.7;
+  }
+
+  .prose :global(li strong) {
+    font-weight: 900;
+  }
+
+  .prose :global(a) {
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 2px solid var(--accent);
+    transition: all 0.2s ease;
+  }
+
+  .prose :global(a:hover) {
+    background-color: var(--accent);
+    color: var(--bg);
+  }
+
+  .prose :global(strong) {
+    font-weight: 900;
+    color: var(--fg);
+  }
+
+  .prose :global(em) {
+    font-style: italic;
+  }
+
+  .prose :global(code) {
+    background: color-mix(in srgb, var(--accent) 15%, transparent);
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    font-weight: 600;
+    border: 2px solid color-mix(in srgb, var(--accent) 30%, transparent);
+    color: var(--fg);
+  }
+
+  .prose :global(pre) {
+    background: color-mix(in srgb, var(--fg) 5%, transparent);
+    border: 3px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    overflow-x: auto;
+    margin: 2rem 0;
+    box-shadow: 3px 3px 0 0 var(--border);
+  }
+
+  .prose :global(pre code) {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--fg);
+    font-weight: 400;
+  }
+
+  .prose :global(blockquote) {
+    border-left: 4px solid var(--accent);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    opacity: 0.9;
+  }
+
+  .prose :global(hr) {
+    border: none;
+    border-top: 3px solid var(--border);
+    margin: 3rem 0;
+  }
+
+  .prose :global(img) {
+    border-radius: 0.5rem;
+    border: 3px solid var(--border);
+    margin: 2rem 0;
+  }
+
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    border: 3px solid var(--border);
+  }
+
+  .prose :global(th),
+  .prose :global(td) {
+    border: 2px solid var(--border);
+    padding: 0.75rem 1rem;
+    text-align: left;
+  }
+
+  .prose :global(th) {
+    background: color-mix(in srgb, var(--accent) 20%, transparent);
+    font-weight: 900;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .prose :global(h2) {
+      font-size: 1.75rem;
+    }
+
+    .prose :global(h3) {
+      font-size: 1.35rem;
+    }
+
+    .prose :global(p) {
+      font-size: 1rem;
+    }
+
+    .prose :global(pre) {
+      padding: 1rem;
+      font-size: 0.85rem;
+    }
   }
 </style>

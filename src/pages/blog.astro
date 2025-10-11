@@ -1,42 +1,53 @@
 ---
-import { changeLanguage, t } from "i18next";
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import BlogPost from "../components/BlogPost.astro";
-import { Trans } from "astro-i18next/components";
-import { localizePath } from "astro-i18next";
 
-changeLanguage("en");
-
-const postsCollection: "posts" | "postsRu" = t("site.posts-collection");
-const pageTitle = t("blog.title");
+const postsCollection: "posts" | "postsRu" = "posts";
+const pageTitle = "Blog";
 const allPosts = await getCollection(postsCollection);
 ---
 
 <BaseLayout pageTitle={pageTitle}>
-  <div>
-    <Trans i18nKey="blog.head">
-      <p>This is where I will post software development projects.</p>
-    </Trans>
-    <ul>
-      {
-        allPosts.map((post) => (
-          <BlogPost
-            url={localizePath(`/${postsCollection}/${post.slug}`)}
-            title={post.data.title}
-            img={post.data.image.url}
-            description={post.data.description}
-            pubDate={post.data.pubDate}
-          />
-        ))
-      }
-    </ul>
+  <div class="mb-8">
+    <p class="text-lg md:text-xl max-w-2xl">Thoughts on software development, reverse engineering, and building things.</p>
+  </div>
+  
+  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    {allPosts.map(post => (
+      <article>
+        <a 
+          href={`/posts/${post.slug}`}
+          class="group block p-6 border-4 border-[var(--border)] rounded-lg bg-[var(--bg)] shadow-[4px_4px_0_0_var(--border)] hover:shadow-[6px_6px_0_0_var(--border)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all h-full flex flex-col"
+        >
+          <div class="aspect-video mb-4 overflow-hidden rounded border-2 border-[var(--border)]">
+            <img 
+              src={post.data.image.url} 
+              alt={post.data.image.alt}
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+            />
+          </div>
+          <div class="flex flex-wrap gap-2 mb-3">
+            {post.data.tags.slice(0, 3).map(tag => (
+              <span class="px-2 py-1 text-xs font-bold border-2 border-[var(--border)] rounded">
+                {tag}
+              </span>
+            ))}
+          </div>
+          <h2 class="font-black text-xl mb-2 group-hover:text-[var(--accent)] transition-colors">{post.data.title}</h2>
+          <p class="text-sm opacity-70 mb-3">{post.data.pubDate.toLocaleDateString('en', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+          <p class="line-clamp-3 flex-grow">{post.data.description}</p>
+        </a>
+      </article>
+    ))}
   </div>
 </BaseLayout>
 
 <style>
-  ul {
-    display: flex;
-    flex-direction: column;
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 </style>

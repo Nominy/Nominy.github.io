@@ -1,45 +1,99 @@
 ---
-import { changeLanguage, t } from "i18next";
 import "../styles/global.css";
 import BaseLayout from "../layouts/BaseLayout.astro";
-
-changeLanguage("en");
-
-const pageTitle = t("about.title");
+const pageTitle = "About";
 ---
 
 <BaseLayout pageTitle={pageTitle}>
-  <h2>Vladyslav Sapkovych</h2>
+  <div class="max-w-3xl">
+    <div class="mb-12 p-8 border-4 border-[var(--border)] rounded-lg bg-[var(--bg)] shadow-[6px_6px_0_0_var(--border)]">
+      <p class="text-xl md:text-2xl leading-relaxed">
+        Award-winning software engineer from Ukraine, pursuing Computer Science at Technical University of Košice. Specialize in Python, JS, C#, Lua for AI, web, and game modding. Expert in reverse engineering. Open-source contributor, regional CS Olympiad winner.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="mailto:sapkovich.vladislav@gmail.com" class="px-4 py-2 font-bold border-3 border-[var(--border)] rounded-md hover:bg-[var(--accent)] hover:text-[var(--bg)] transition-colors">
+          Email me
+        </a>
+        <a href="https://github.com/Nominy" class="px-4 py-2 font-bold border-3 border-[var(--border)] rounded-md hover:bg-[var(--accent)] hover:text-[var(--bg)] transition-colors" target="_blank" rel="noopener">
+          GitHub
+        </a>
+        <a href="/assets/resume.pdf" class="px-4 py-2 font-bold border-3 border-[var(--border)] rounded-md hover:bg-[var(--accent)] hover:text-[var(--bg)] transition-colors" target="_blank">
+          Download CV
+        </a>
+      </div>
+    </div>
 
-  <p>Award-winning software engineer from Ukraine, pursuing Computer Science degree at Technical University of Košice, Faculty of Electrical Engineering and Informatics. Specialize in Python, JS, C#, Lua for AI, web, and game modding. Expert in reverse engineering. Open-source contributor, regional CS Olympiad winner. Reach me at sapkovich.vladislav@gmail.com or <a href="https://github.com/Nominy">GitHub</a></p>
+    <section class="mb-12">
+      <h2 class="text-3xl font-black mb-6">Skills</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="p-6 border-4 border-[var(--border)] rounded-lg">
+          <h3 class="font-black text-lg mb-3">Languages & Frameworks</h3>
+          <p>Python, PyTorch, C#, Lua, JS/TypeScript (React, Next.js, Svelte, Express.js), GDScript, C++</p>
+        </div>
+        <div class="p-6 border-4 border-[var(--border)] rounded-lg">
+          <h3 class="font-black text-lg mb-3">Tools & Platforms</h3>
+          <p>Unity, Unreal Engine 4 (UE4SS), Blender API, SQLite, GitHub Actions, Linux</p>
+        </div>
+      </div>
+    </section>
 
-  <h3>Skills</h3>
-  <ul>
-    <li>Languages/Frameworks: Python, PyTorch, C#, Lua, JS/TypeScript (React, Next.js, Svelte, Express.js), GDScript, C++</li>
-    <li>Tools/Platforms: Unity, Unreal Engine 4 (UE4SS), Blender API, SQLite, GitHub Actions, Linux</li>
-  </ul>
+    <section class="mb-12">
+      <h2 class="text-3xl font-black mb-6">Key Projects</h2>
+      <div class="space-y-4">
+        {[
+          { title: 'RimMercenaries', year: '2025', desc: '14k+ views, 3.5k+ subscribers. Complex C# systems, XML enhancements for RimWorld mod.' },
+          { title: 'Hidden-Bat Detector', year: '2023', desc: 'ResNet50 fine-tuned on synthetic data; 35% pass@1 accuracy using PyTorch.' },
+          { title: 'Payday 3 Audio Mod', year: '2025', desc: 'Reverse-engineered audio via Wwise API using UE4SS.' },
+          { title: 'vk-kiriban-catcher', year: '2024', desc: 'Real-time VK milestone tracker with WebSockets built in Next.js.' },
+          { title: 'io scene mdl', year: '2023', desc: 'Reverse-engineered .mdl format importer/exporter as Blender Addon.' }
+        ].map(project => (
+          <div class="p-6 border-4 border-[var(--border)] rounded-lg hover:shadow-[4px_4px_0_0_var(--border)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-black text-xl">{project.title}</h3>
+              <span class="px-3 py-1 text-sm font-bold border-2 border-[var(--border)] rounded">{project.year}</span>
+            </div>
+            <p>{project.desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
 
-  <h3>Key Projects</h3>
-  <ul>
-    <li>RimMercenaries (RimWorld Mod, 2025): 14k+ views, 3.5k+ subscribers. Complex C# systems, XML enhancements.</li>
-    <li>Hidden-Bat Detector (PyTorch, 2023): ResNet50 fine-tuned on synthetic data; 35% pass@1 accuracy.</li>
-    <li>Payday 3 Audio Mod (UE4SS, 2025): Reverse-engineered audio via Wwise API.</li>
-    <li>vk-kiriban-catcher (Next.js, 2024): Real-time VK milestone tracker with WebSockets.</li>
-    <li>io scene mdl (Blender Addon, 2023): Reverse-engineered .mdl format importer/exporter.</li>
-  </ul>
+    <section class="mb-12">
+      <h2 class="text-3xl font-black mb-6">Education & Honors</h2>
+      <div class="space-y-4">
+        <div class="p-6 border-4 border-[var(--border)] rounded-lg">
+          <h3 class="font-black text-lg mb-2">Gold Medal Graduate</h3>
+          <p>Economic Lyceum of Odesa, 2025 (GPA 4.9/5)</p>
+        </div>
+        <div class="p-6 border-4 border-[var(--border)] rounded-lg">
+          <h3 class="font-black text-lg mb-2">CS Olympiad Winner</h3>
+          <p>Odesa Region (Python), 2023 & 2024</p>
+        </div>
+      </div>
+    </section>
 
-  <h3>Open Source & Community</h3>
-  <p>Contributor to GitHub developer tools and algorithm libraries. Volunteer DevOps & Lua Developer, Crystal Horizons GMod Server (2024–2025). Tutored 30+ students in programming, math, physics.</p>
+    <section class="mb-12">
+      <h2 class="text-3xl font-black mb-6">Community</h2>
+      <div class="p-6 border-4 border-[var(--border)] rounded-lg">
+        <p class="mb-4">Contributor to GitHub developer tools and algorithm libraries. Volunteer DevOps & Lua Developer at Crystal Horizons GMod Server (2024–2025).</p>
+        <p>Tutored 30+ students in programming, math, and physics.</p>
+      </div>
+    </section>
 
-  <h3>Education & Honors</h3>
-  <ul>
-    <li>Gold Medal Graduate, Economic Lyceum of Odesa (2025, GPA 4.9/5)</li>
-    <li>Winner, Odesa Region CS Olympiad (Python), 2023 & 2024</li>
-  </ul>
-
-  <h3>Languages</h3>
-  <p>English, Ukrainian, Russian (Fluent); German, Slovak (Intermediate); Chinese, Spanish (Basic)</p>
-
-  <h3>Interests</h3>
-  <p>Reverse Engineering, AI Interpretability, Procedural Generation, Algorithm Visualization</p>
+    <section>
+      <h2 class="text-3xl font-black mb-6">Languages & Interests</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="p-6 border-4 border-[var(--border)] rounded-lg">
+          <h3 class="font-black text-lg mb-3">Languages</h3>
+          <p><strong>Fluent:</strong> English, Ukrainian, Russian</p>
+          <p><strong>Intermediate:</strong> German, Slovak</p>
+          <p><strong>Basic:</strong> Chinese, Spanish</p>
+        </div>
+        <div class="p-6 border-4 border-[var(--border)] rounded-lg">
+          <h3 class="font-black text-lg mb-3">Interests</h3>
+          <p>Reverse Engineering, AI Interpretability, Procedural Generation, Algorithm Visualization</p>
+        </div>
+      </div>
+    </section>
+  </div>
 </BaseLayout>

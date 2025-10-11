@@ -2,8 +2,26 @@
 
 ---
 
-<div class="hamburger">
-  <span class="line"></span>
-  <span class="line"></span>
-  <span class="line"></span>
-</div>
+<button class="hamburger md:hidden p-2 border-2 border-[var(--border)] rounded-md hover:bg-[var(--accent)] transition-colors" aria-controls="primary-nav" aria-expanded="false" aria-label="Toggle menu">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+    <line x1="3" y1="6" x2="21" y2="6"></line>
+    <line x1="3" y1="12" x2="21" y2="12"></line>
+    <line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</button>
+
+<script>
+  const btn = document.currentScript?.parentElement?.querySelector('button') || document.querySelector('.hamburger');
+  const nav = document.getElementById('primary-nav');
+  if (btn && nav) {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      nav.classList.toggle('expanded');
+      if (!expanded) {
+        const firstLink = nav.querySelector('a');
+        if (firstLink) firstLink.focus();
+      }
+    });
+  }
+</script>

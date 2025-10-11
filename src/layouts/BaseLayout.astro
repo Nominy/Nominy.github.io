@@ -2,41 +2,56 @@
 import "../styles/global.css";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
-import i18next, { t } from "i18next";
-import { LanguageSelector } from "astro-i18next/components";
 
-const { pageTitle } = Astro.props;
+const { pageTitle, hideTitle = false } = Astro.props;
+const pathname = Astro.url.pathname;
+const isRu = pathname.startsWith('/ru');
+const switchHref = isRu ? (pathname.replace(/^\/ru/, '') || '/') : (pathname === '/' ? '/ru' : `/ru${pathname}`);
 ---
 
-<html lang={i18next.language}>
+<html lang={isRu ? 'ru' : 'en'}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700;900&display=swap" rel="stylesheet">
+    <script is:inline>
       (function () {
         const stored = localStorage.getItem('theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (stored === 'light' || (!stored && !prefersDark)) {
+        if (stored === 'dark' || (!stored && prefersDark)) {
+          document.documentElement.classList.remove('light');
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
           document.documentElement.classList.add('light');
-          localStorage.setItem('theme', 'light');
         }
       })();
     </script>
-    <title>{t(pageTitle)}</title>
+    <title>{pageTitle}</title>
+    <link rel="canonical" href={(Astro.site ? new URL(pathname || '/', Astro.site).toString() : pathname) } />
+    <link rel="alternate" hrefLang="en" href={(Astro.site ? new URL((isRu ? pathname.replace(/^\/ru/, '') || '/' : pathname) || '/', Astro.site).toString() : (isRu ? pathname.replace(/^\/ru/, '') || '/' : pathname))} />
+    <link rel="alternate" hrefLang="ru" href={(Astro.site ? new URL((isRu ? pathname : `/ru${pathname === '/' ? '' : pathname}`) || '/ru', Astro.site).toString() : (isRu ? pathname : `/ru${pathname === '/' ? '' : pathname}`))} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:url" content={(Astro.site ? new URL(pathname || '/', Astro.site).toString() : pathname)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: pageTitle,
+      url: Astro.site ? Astro.site.toString() : undefined
+    })}></script>
   </head>
   <body>
-    <LanguageSelector showFlag={true} class="select" />
     <Header />
-    <h1>{pageTitle}</h1>
-    <slot />
-
+    <main class="container py-8 md:py-12">
+      {!hideTitle && <h1 class="mb-8 md:mb-12">{pageTitle}</h1>}
+      <slot />
+    </main>
     <Footer />
-
-    <script>
-      import "../scripts/menu.js";
-    </script>
   </body>
 </html>
 

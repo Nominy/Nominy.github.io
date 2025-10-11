@@ -2,18 +2,20 @@
 
 import EndlessCarousel from "./EndlessCarousel";
 import BlogPost from "./BlogPost.astro";
-import { localizePath } from "astro-i18next";
 
 const { postsCollection, posts } = Astro.props;
+const pathname = Astro.url.pathname;
+const isRu = pathname.startsWith('/ru');
+const prefix = isRu ? '/ru' : '';
 
 const itemsWithClone = [posts[posts.length - 1], ...posts, posts[0]];
 ---
-<EndlessCarousel client:load items={itemsWithClone}>
+<div class="overflow-x-auto snap-x snap-mandatory flex gap-4 py-4" role="region" aria-label="Recent posts">
   {
     itemsWithClone.map((post: any, index: number) => (
-      <div class='carousel-box' id={index.toString()}>
+      <div class='carousel-box min-w-[80%] md:min-w-[45%] lg:min-w-[30%] snap-center' id={index.toString()}>
         <BlogPost
-          url={localizePath(`/${postsCollection}/${post.slug}`)}
+          url={`${prefix}/${postsCollection}/${post.slug}`}
           title={post.title}
           img={post.imageUrl}
           description={post.description}
@@ -22,4 +24,4 @@ const itemsWithClone = [posts[posts.length - 1], ...posts, posts[0]];
       </div>
     ))
   }
-</EndlessCarousel>
+</div>

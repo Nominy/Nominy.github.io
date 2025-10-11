@@ -1,16 +1,99 @@
 ---
-import { changeLanguage, t } from "i18next";
 import "../../styles/global.css";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-
-changeLanguage("ru");
-
-const pageTitle = t("about.title");
+const pageTitle = "Обо мне";
 ---
 
-<style></style>
 <BaseLayout pageTitle={pageTitle}>
-  <h2>Placeholder</h2>
+  <div class="max-w-3xl">
+    <div class="mb-12 p-8 border-4 border-[var(--border)] rounded-lg bg-[var(--bg)] shadow-[6px_6px_0_0_var(--border)]">
+      <p class="text-xl md:text-2xl leading-relaxed">
+        Отмеченный наградами инженер-программист из Украины, получаю степень в области компьютерных наук в Техническом университете Кошице. Специализируюсь на Python, JS, C#, Lua для ИИ, веб-разработки и модификации игр. Эксперт по реверс-инжинирингу. Участник проектов с открытым исходным кодом, победитель региональной олимпиады по информатике.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="mailto:sapkovich.vladislav@gmail.com" class="px-4 py-2 font-bold border-3 border-[var(--border)] rounded-md hover:bg-[var(--accent)] hover:text-[var(--bg)] transition-colors">
+          Написать мне
+        </a>
+        <a href="https://github.com/Nominy" class="px-4 py-2 font-bold border-3 border-[var(--border)] rounded-md hover:bg-[var(--accent)] hover:text-[var(--bg)] transition-colors" target="_blank" rel="noopener">
+          GitHub
+        </a>
+        <a href="/assets/resume.pdf" class="px-4 py-2 font-bold border-3 border-[var(--border)] rounded-md hover:bg-[var(--accent)] hover:text-[var(--bg)] transition-colors" target="_blank">
+          Скачать резюме
+        </a>
+      </div>
+    </div>
 
-  <p>Placeholder</p>
+    <section class="mb-12">
+      <h2 class="text-3xl font-black mb-6">Навыки</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="p-6 border-4 border-[var(--border)] rounded-lg">
+          <h3 class="font-black text-lg mb-3">Языки и фреймворки</h3>
+          <p>Python, PyTorch, C#, Lua, JS/TypeScript (React, Next.js, Svelte, Express.js), GDScript, C++</p>
+        </div>
+        <div class="p-6 border-4 border-[var(--border)] rounded-lg">
+          <h3 class="font-black text-lg mb-3">Инструменты и платформы</h3>
+          <p>Unity, Unreal Engine 4 (UE4SS), Blender API, SQLite, GitHub Actions, Linux</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-3xl font-black mb-6">Ключевые проекты</h2>
+      <div class="space-y-4">
+        {[
+          { title: 'RimMercenaries', year: '2025', desc: '14k+ просмотров, 3.5k+ подписчиков. Сложные системы на C#, улучшения XML для мода RimWorld.' },
+          { title: 'Hidden-Bat Detector', year: '2023', desc: 'Дообученный ResNet50 на синтетических данных; точность 35% pass@1 с использованием PyTorch.' },
+          { title: 'Payday 3 Audio Mod', year: '2025', desc: 'Реверс-инжиниринг аудио через Wwise API с использованием UE4SS.' },
+          { title: 'vk-kiriban-catcher', year: '2024', desc: 'Трекер вех VK в реальном времени с WebSockets на Next.js.' },
+          { title: 'io scene mdl', year: '2023', desc: 'Импортер/экспортер формата .mdl как аддон для Blender.' }
+        ].map(project => (
+          <div class="p-6 border-4 border-[var(--border)] rounded-lg hover:shadow-[4px_4px_0_0_var(--border)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-black text-xl">{project.title}</h3>
+              <span class="px-3 py-1 text-sm font-bold border-2 border-[var(--border)] rounded">{project.year}</span>
+            </div>
+            <p>{project.desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-3xl font-black mb-6">Образование и награды</h2>
+      <div class="space-y-4">
+        <div class="p-6 border-4 border-[var(--border)] rounded-lg">
+          <h3 class="font-black text-lg mb-2">Золотая медаль</h3>
+          <p>Экономический лицей Одессы, 2025 (средний балл 4.9/5)</p>
+        </div>
+        <div class="p-6 border-4 border-[var(--border)] rounded-lg">
+          <h3 class="font-black text-lg mb-2">Победитель олимпиады по информатике</h3>
+          <p>Одесская область (Python), 2023 и 2024</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-3xl font-black mb-6">Сообщество</h2>
+      <div class="p-6 border-4 border-[var(--border)] rounded-lg">
+        <p class="mb-4">Участник проектов GitHub для разработчиков и библиотек алгоритмов. Волонтёр DevOps и Lua-разработчик на сервере Crystal Horizons GMod (2024–2025).</p>
+        <p>Обучил 30+ студентов программированию, математике и физике.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-3xl font-black mb-6">Языки и интересы</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="p-6 border-4 border-[var(--border)] rounded-lg">
+          <h3 class="font-black text-lg mb-3">Языки</h3>
+          <p><strong>Свободно:</strong> Английский, Украинский, Русский</p>
+          <p><strong>Средний уровень:</strong> Немецкий, Словацкий</p>
+          <p><strong>Базовый:</strong> Китайский, Испанский</p>
+        </div>
+        <div class="p-6 border-4 border-[var(--border)] rounded-lg">
+          <h3 class="font-black text-lg mb-3">Интересы</h3>
+          <p>Реверс-инжиниринг, интерпретируемость ИИ, процедурная генерация, визуализация алгоритмов</p>
+        </div>
+      </div>
+    </section>
+  </div>
 </BaseLayout>

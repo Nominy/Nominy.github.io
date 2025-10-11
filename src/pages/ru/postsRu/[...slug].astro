@@ -1,9 +1,6 @@
 ---
-import { changeLanguage } from "i18next";
 import { getCollection } from "astro:content";
 import MarkdownPostLayout from "../../../layouts/MarkdownPostLayout.astro";
-
-changeLanguage("ru");
 
 export async function getStaticPaths() {
     const blogEntries = await getCollection("postsRu");

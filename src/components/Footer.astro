@@ -2,18 +2,21 @@
 import Social from './Social.astro';
 ---
 
-<style>
-  footer {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-    justify-content: center;
-    animation: fadeIn 1s ease-in-out;
-  }
-</style>
-
-<footer>
-    <Social platform="twitter" username="astrodotbuild" />
-    <Social platform="github" username="Nominy" />
-    <Social platform="youtube" username="astrodotbuild" />
+<footer class="border-t-4 border-[var(--border)] mt-16 md:mt-24">
+  <div class="container py-8 md:py-12">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+      <div>
+        <p class="font-black text-2xl mb-2">Nafty</p>
+        <p class="opacity-70">Engineer, reverse engineer, builder</p>
+      </div>
+      <div class="flex gap-3">
+        <Social platform="github" username="Nominy" />
+        <Social platform="twitter" username="astrodotbuild" />
+        <Social platform="youtube" username="astrodotbuild" />
+      </div>
+    </div>
+    <div class="mt-8 pt-6 border-t-2 border-[var(--border)] text-center opacity-70 text-sm">
+      <p>© {new Date().getFullYear()} Nafty. All rights reserved.</p>
+    </div>
+  </div>
 </footer>

@@ -1,46 +1,26 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { t, changeLanguage } from "i18next";
-import { localizePath } from "astro-i18next";
 
-changeLanguage("en");
-
-const postsCollection: "posts" | "postsRu" = t("site.posts-collection");
+const postsCollection: "posts" | "postsRu" = "posts";
 const allPosts = await getCollection(postsCollection);
 const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
-const pageTitle = t("tagsPage.title");
+const pageTitle = "Tags";
 ---
 
 <BaseLayout pageTitle={pageTitle}>
-  <div class="tags">
-    {
-      tags.map((tag) => (
-        <p class="tag">
-          <a href={localizePath(`/tags/${tag}`)}>{t(`tags.${tag}`) !== `tags.${tag}` ? t(`tags.${tag}`) : tag}</a>
-        </p>
-      ))
-    }
+  <div class="mb-8">
+    <p class="text-lg md:text-xl max-w-2xl">Explore posts by topic</p>
+  </div>
+  
+  <div class="flex flex-wrap gap-4">
+    {tags.map((tag) => (
+      <a 
+        href={`/tags/${tag}`}
+        class="px-6 py-3 font-bold border-4 border-[var(--border)] rounded-lg hover:bg-[var(--accent)] hover:text-[var(--bg)] shadow-[3px_3px_0_0_var(--border)] hover:shadow-[5px_5px_0_0_var(--border)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all capitalize"
+      >
+        {tag}
+      </a>
+    ))}
   </div>
 </BaseLayout>
-
-<style>
-  a {
-    color: #00539f;
-  }
-
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 auto;
-  }
-
-  .tag {
-    margin: 0.25em;
-    border: dotted 1px #a1a1a1;
-    border-radius: 0.5em;
-    padding: 0.5em 1em;
-    font-size: 1.15em;
-    background-color: #f8fcfd;
-  }
-</style>

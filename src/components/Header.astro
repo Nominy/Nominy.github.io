@@ -2,12 +2,62 @@
 import Hamburger from "./Hamburger.astro";
 import Navigation from "./Navigation.astro";
 import ThemeIcon from "./ThemeIcon.astro";
+
+const pathname = Astro.url.pathname;
+const isRu = pathname.startsWith('/ru');
+const switchHref = isRu ? (pathname.replace(/^\/ru/, '') || '/') : (pathname === '/' ? '/ru' : `/ru${pathname}`);
 ---
 
-<header>
-    <nav>
-        <Hamburger />
-        <ThemeIcon />
+<header class="border-b-4 border-[var(--border)] bg-[var(--bg)] sticky top-0 z-50">
+  <div class="container">
+    <nav class="flex items-center justify-between py-4 gap-4">
+      <a href={isRu ? '/ru' : '/'} class="text-xl font-black tracking-tight hover:translate-x-1 transition-transform">
+        Nafty
+      </a>
+      
+      <div class="flex items-center gap-3 md:gap-4">
         <Navigation />
+        <div class="flex items-center gap-2">
+          <a 
+            href={switchHref} 
+            class="px-3 py-1.5 border-2 border-[var(--border)] rounded-md font-bold text-sm hover:bg-[var(--accent)] hover:border-[var(--accent)] transition-colors"
+            aria-label={isRu ? 'Switch to English' : 'Switch to Russian'}
+          >
+            {isRu ? 'EN' : 'RU'}
+          </a>
+          <ThemeIcon />
+          <Hamburger />
+        </div>
+      </div>
     </nav>
+  </div>
 </header>
+
+<style>
+  @media (max-width: 767px) {
+    nav :global(.nav-links) {
+      position: fixed;
+      top: 65px;
+      left: 0;
+      right: 0;
+      background: var(--bg);
+      border-bottom: 4px solid var(--border);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+    
+    nav :global(.nav-links.expanded) {
+      max-height: 300px;
+      padding: 1rem 0;
+    }
+    
+    nav :global(.nav-links a) {
+      padding: 0.75rem 1.5rem;
+      border-bottom: 1px solid color-mix(in srgb, var(--border) 20%, transparent);
+    }
+  }
+</style>
