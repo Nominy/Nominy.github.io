@@ -13,7 +13,7 @@ tags: ["jpeg xl", "rlhf", "generative art", "machine learning"]
 >
 > We trained a **2,982,480-parameter** language model to write JXL art: images encoded as tiny programs in JPEG XL's prediction language, compiled to files of a few dozen bytes. Its training data was **24,000 random valid programs generated in 43 minutes**; it never saw a program written by a human artist. We then tuned it with RLHF from **1,442 A/B picks by one person** over **820 policy steps**.
 >
-> Valid images rose from **64% to 90%**. A CLIP judge that never saw the picks rates the outputs **0.27 → 0.42** (human gallery: 0.47). Programs got shorter (**median 32 → 29 bytes**) while the images got richer, to **more image per byte than the human gallery** (1,737 vs 1,562 PNG bytes per JXL byte). In the two best pieces we dissected, every visual element maps to a token, which we confirmed by ablation.
+> Valid images rose from **64% to 90%**. A CLIP judge that never saw the picks rates the outputs **0.27 → 0.42** (human gallery: 0.47). Programs got shorter (**median 32 → 29 bytes**) while the images got richer, to **more image per byte than the human gallery** (1,737 vs 1,562 PNG bytes per JXL byte). In a blind test after training, the labeler preferred the trained model's image in **39 of 50 pairs**. In the two best pieces we dissected, every visual element maps to a token, which we confirmed by ablation.
 >
 > Several outputs match human gallery pieces. The closest renders Jon Sneyers' 21-byte "The Queen's Fractal", whose code was never published, with **53% of pixels identical**, from a 35-byte program against Jon's 21 bytes. Then we measured the base rate: **about 1 in 170 random programs from our training data already land there**, and training did not raise that rate. We read these matches as **format sweet spots**, places in the format that short programs reach easily, which artists found by hand and random search finds too.
 
@@ -33,7 +33,7 @@ This project was done by one person with an AI coding assistant (Claude) and too
 
 ## Findings
 
-1. A 3M model trained on random programs and 1,442 picks produces images that a blind CLIP judge rates close to the human gallery, with shorter programs than it started with. ([Experiment 1](#experiment-1-does-one-persons-taste-move-a-3m-model))
+1. A 3M model trained on random programs and 1,442 picks produces images that a blind CLIP judge rates close to the human gallery, with shorter programs than it started with. In a blind A/B test, the labeler preferred it over the starting model in 39 of 50 pairs. ([Experiment 1](#experiment-1-does-one-persons-taste-move-a-3m-model), [blind test](#what-we-cant-claim))
 2. Its best images are legible: each token has a visible job, confirmed by changing tokens one at a time. ([Experiment 2](#experiment-2-are-the-best-images-legible-programs))
 3. Its outputs match several human pieces, and the closest match sits in a region random programs already reach. ([Experiment 3](#experiment-3-did-it-rediscover-human-pieces))
 4. RLHF chose among what the starting model could already make. ([Experiment 4](#experiment-4-did-it-invent-anything))
@@ -260,7 +260,7 @@ This write-up is optimised with hindsight and presents the second version of the
 
 The evidence does support this: the format has a few sweet spots, and human artists, random generation, and a model steered by taste all reach them. A shared output reached by different programs tells us about the format.
 
-One check is still open: a blind A/B test of the starting model against the trained one, scored by the labeler without knowing which is which ([[PENDING: blind A/B result]]). It would test the improvement without relying on any learned scorer.
+A blind A/B test checks the improvement without any learned scorer. After training ended, the labeler judged 50 pairs, each with one image from the starting model and one from step 820, sides randomised and sources hidden until the last vote. The step-820 image won **39 of 50** (78%; 95% interval 64–88%; exact binomial p = 9×10⁻⁵; no ties). Two limits apply. The judge is the person whose picks trained the model, so this measures movement toward one person's taste. And after 1,442 picks that person may recognise the trained model's style, so the test hides labels but possibly not style.
 
 ## Reproducibility
 
@@ -270,7 +270,7 @@ You can run the blind comparison yourself at [nafty.is-a.dev/jxl-blind-test](/jx
 
 ## What's next
 
-- The blind A/B test above.
+- Blind tests by people other than the labeler. The browser version lets anyone run one, but results stay on their device.
 - Splines and layered frames in the training data, so the model can use the tools artists use.
 - Images shown at their natural aspect ratio while labeling.
 - Base rates for the other gallery look-alikes.
