@@ -1,0 +1,47 @@
+---
+/** The in-browser JPEG XL blind test (public/jxl-blind-test/), embedded at the top of a post. */
+---
+
+<section class="post-embed" aria-label="Blind test">
+  <p class="post-embed-lead ui">
+    <strong>Before you read:</strong> each pair has one image from the model before RLHF and one from the same model
+    after 820 RLHF steps on one person's picks, both generated in your browser. Pick the one you like; after 5 rounds you
+    see which was which. <a href="/jxl-blind-test/">Full page</a>
+  </p>
+  <div id="blind-game" class="ui" data-rounds="5" data-autostart></div>
+</section>
+<link rel="stylesheet" href="/jxl-blind-test/style.css" />
+<script is:inline type="module" src="/jxl-blind-test/app.js"></script>
+
+<style>
+  .post-embed {
+    margin: 0 calc((min(var(--wide), 100cqi - 2 * var(--gutter)) - 100%) / -2) 3rem;
+    padding: 1.25rem 1.25rem 0.25rem;
+    background: var(--tint);
+    border-radius: 10px;
+  }
+  .post-embed-lead {
+    max-width: var(--content);
+    margin: 0 auto;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  .post-embed-lead strong {
+    color: var(--heading);
+    font-weight: 600;
+  }
+  .post-embed-lead a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .post-embed :global(#blind-game) {
+    margin: 1rem 0 0;
+  }
+  @media (max-width: 640px) {
+    .post-embed {
+      padding: 1rem 0.75rem 0.25rem;
+    }
+  }
+</style>

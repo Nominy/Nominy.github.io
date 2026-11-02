@@ -7,6 +7,7 @@ image:
   url: "/posts/jxl-art-rlhf/neon_chevron.webp"
   alt: "Neon Chevron: glowing diagonal light trails folding at a sharp tip on black"
 tags: ["jpeg xl", "rlhf", "generative art", "machine learning"]
+embed: "jxl-blind-test"
 ---
 
 > **TL;DR**
@@ -266,7 +267,7 @@ A blind A/B test checks the improvement without any learned scorer. After traini
 
 Every checkpoint, the snapshots at 5-step intervals, every pick, every image shown and the logs are public at https://huggingface.co/Nafty/jxl-art-rlhf. The code, including the evaluation script `python -m jxlart.evaluate`, is at https://github.com/Nominy/jxl-art-rlhf. The human gallery is at https://jpegxl.info/art/ and the online editor at https://www.januschka.com/jxl-art/.
 
-You can run the blind comparison yourself at [nafty.is-a.dev/jxl-blind-test](/jxl-blind-test/). Both checkpoints run in your browser (3M parameters, about 6 MB each as float16), and libjxl runs as WebAssembly. You pick from 10 pairs and then see which model you sided with.
+The blind test at the top of this post also has its own page with 10 rounds: [nafty.is-a.dev/jxl-blind-test](/jxl-blind-test/). Both checkpoints run in your browser (3M parameters, about 6 MB each as float16), and libjxl runs as WebAssembly.
 
 ## What's next
 

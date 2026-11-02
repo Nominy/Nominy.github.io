@@ -11,7 +11,8 @@ const postsCollection = defineCollection({
         url: z.string().optional(),
         alt: z.string()
       }),
-      tags: z.array(z.string())
+      tags: z.array(z.string()),
+      embed: z.enum(["jxl-blind-test"]).optional()
     })
 });
 

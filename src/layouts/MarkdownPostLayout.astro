@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import { formatDate, tagSlug } from '../lib/site';
+import BlindTestEmbed from '../components/BlindTestEmbed.astro';
 
 const { frontmatter } = Astro.props;
 const isRu = Astro.url.pathname.startsWith('/ru');
@@ -35,6 +36,8 @@ const image = frontmatter.image?.url ?? frontmatter.image?.src;
         </ul>
       )}
     </header>
+
+    {frontmatter.embed === 'jxl-blind-test' && <BlindTestEmbed />}
 
     <div class="prose">
       <slot />
