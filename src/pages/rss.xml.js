@@ -1,18 +1,19 @@
-import rss from "@astrojs/rss";
-import { getCollection } from "astro:content";
+import rss from '@astrojs/rss';
+import { getCollection } from 'astro:content';
+import { SITE_DESCRIPTION, SITE_TITLE, byNewest } from '../lib/site';
 
-export async function get() {
-  const posts = await getCollection('posts');
+export async function GET(context) {
+  const posts = byNewest(await getCollection('posts'));
   return rss({
-    title: 'Astro Learner | Blog',
-    description: 'My journey learning Astro',
-    site: (import.meta.env.SITE || 'https://www.crystalgate.life'),
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    site: context.site,
     items: posts.map((post) => ({
       title: post.data.title,
       pubDate: post.data.pubDate,
       description: post.data.description,
       link: `/posts/${post.slug}/`,
     })),
-    customData: `<language>en-us</language>`,
+    customData: '<language>en-us</language>',
   });
 }

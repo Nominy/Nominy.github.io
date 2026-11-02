@@ -1,57 +1,81 @@
 ---
-import "../styles/global.css";
-import Footer from "../components/Footer.astro";
-import Header from "../components/Header.astro";
+import '@fontsource-variable/source-serif-4/opsz.css';
+import '@fontsource-variable/source-serif-4/opsz-italic.css';
+import '@fontsource-variable/inter/index.css';
+import '../styles/global.css';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../lib/site';
+import { localeAlternates } from '../lib/i18n';
 
-const { pageTitle, hideTitle = false } = Astro.props;
+interface Props {
+  /** Visible page heading; also used for the document title unless `docTitle` is given. */
+  pageTitle?: string;
+  /** Full document <title>. Defaults to "<pageTitle> — Naft San". */
+  docTitle?: string;
+  description?: string;
+  /** Site-relative or absolute image URL for og:image. */
+  image?: string;
+  imageAlt?: string;
+  ogType?: 'website' | 'article';
+  hideTitle?: boolean;
+  /** Let the page control its own width (articles with wide figures). */
+  fullWidth?: boolean;
+}
+
+const {
+  pageTitle,
+  docTitle = pageTitle ? `${pageTitle} — ${SITE_TITLE}` : SITE_TITLE,
+  description = SITE_DESCRIPTION,
+  image,
+  imageAlt,
+  ogType = 'website',
+  hideTitle = false,
+  fullWidth = false,
+} = Astro.props;
+
 const pathname = Astro.url.pathname;
 const isRu = pathname.startsWith('/ru');
-const switchHref = isRu ? (pathname.replace(/^\/ru/, '') || '/') : (pathname === '/' ? '/ru' : `/ru${pathname}`);
+const site = Astro.site ?? new URL('https://nafty.is-a.dev');
+const canonical = new URL(pathname, site).toString();
+const alternates = await localeAlternates(pathname);
+const ogImage = image ? new URL(image, site).toString() : undefined;
 ---
 
+<!doctype html>
 <html lang={isRu ? 'ru' : 'en'}>
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.png" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1f1e1d" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700;900&display=swap" rel="stylesheet">
-    <script is:inline>
-      (function () {
-        const stored = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (stored === 'dark' || (!stored && prefersDark)) {
-          document.documentElement.classList.remove('light');
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-          document.documentElement.classList.add('light');
-        }
-      })();
-    </script>
-    <title>{pageTitle}</title>
-    <link rel="canonical" href={(Astro.site ? new URL(pathname || '/', Astro.site).toString() : pathname) } />
-    <link rel="alternate" hrefLang="en" href={(Astro.site ? new URL((isRu ? pathname.replace(/^\/ru/, '') || '/' : pathname) || '/', Astro.site).toString() : (isRu ? pathname.replace(/^\/ru/, '') || '/' : pathname))} />
-    <link rel="alternate" hrefLang="ru" href={(Astro.site ? new URL((isRu ? pathname : `/ru${pathname === '/' ? '' : pathname}`) || '/ru', Astro.site).toString() : (isRu ? pathname : `/ru${pathname === '/' ? '' : pathname}`))} />
-    <meta property="og:title" content={pageTitle} />
-    <meta property="og:url" content={(Astro.site ? new URL(pathname || '/', Astro.site).toString() : pathname)} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <script type="application/ld+json" set:html={JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'WebSite',
-      name: pageTitle,
-      url: Astro.site ? Astro.site.toString() : undefined
-    })}></script>
+    <title>{docTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {alternates.en && <link rel="alternate" hreflang="en" href={new URL(alternates.en, site).toString()} />}
+    {alternates.ru && <link rel="alternate" hreflang="ru" href={new URL(alternates.ru, site).toString()} />}
+    <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href={new URL('/rss.xml', site).toString()} />
+    <meta property="og:site_name" content={SITE_TITLE} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={pageTitle ?? SITE_TITLE} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogImage && imageAlt && <meta property="og:image:alt" content={imageAlt} />}
+    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={pageTitle ?? SITE_TITLE} />
+    <meta name="twitter:description" content={description} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
   </head>
   <body>
     <Header />
-    <main class="container py-8 md:py-12">
-      {!hideTitle && <h1 class="mb-8 md:mb-12">{pageTitle}</h1>}
+    <main class={fullWidth ? "article-main" : "column"}>
+      {!hideTitle && pageTitle && <h1 class="page-title">{pageTitle}</h1>}
       <slot />
     </main>
     <Footer />
   </body>
 </html>
-

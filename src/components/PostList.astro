@@ -1,0 +1,27 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { byNewest, formatDate } from '../lib/site';
+
+interface Props {
+  posts: CollectionEntry<'posts' | 'postsRu'>[];
+  /** URL prefix for post links, e.g. "/posts/" or "/ru/postsRu/". */
+  base: string;
+  locale?: 'en' | 'ru';
+  headingLevel?: 2 | 3;
+}
+
+const { posts, base, locale = 'en', headingLevel = 2 } = Astro.props;
+const Heading = headingLevel === 3 ? 'h3' : 'h2';
+---
+
+<ul class="post-list">
+  {byNewest(posts).map((post) => (
+    <li>
+      <a href={`${base}${post.slug}/`}>
+        <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate, locale)}</time>
+        <Heading>{post.data.title}</Heading>
+        <p>{post.data.description}</p>
+      </a>
+    </li>
+  ))}
+</ul>

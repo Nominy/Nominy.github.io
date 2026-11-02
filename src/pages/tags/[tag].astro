@@ -1,63 +1,22 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { tagSlug } from '../../lib/site';
 
-const postsCollection: "posts" | "postsRu" = "posts";
 export async function getStaticPaths() {
-    const postsCollection: "posts" | "postsRu" = "posts";
-    const allPosts = await getCollection(postsCollection);
-    const uniqueTags = [
-        ...new Set(allPosts.map((post) => post.data.tags).flat()),
-    ];
-    return uniqueTags.map((tag) => {
-        const filteredPosts = allPosts.filter((post) => post.data.tags.includes(tag));
-        return {
-            params: { tag },
-            props: { posts: filteredPosts },
-        };
-    });
+  const posts = await getCollection('posts');
+  const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
+  return tags.map((tag) => ({
+    params: { tag: tagSlug(tag) },
+    props: { tag, posts: posts.filter((post) => post.data.tags.includes(tag)) },
+  }));
 }
-const { tag } = Astro.params;
-const { posts } = Astro.props;
-const pageTitle = `Posts tagged: ${tag}`;
+
+const { tag, posts } = Astro.props;
 ---
 
-<BaseLayout pageTitle={pageTitle}>
-  <div class="mb-8">
-    <a href="/tags" class="inline-flex items-center gap-2 px-4 py-2 font-bold border-3 border-[var(--border)] rounded-md hover:bg-[var(--accent)] hover:text-[var(--bg)] transition-colors">
-      ← All tags
-    </a>
-  </div>
-
-  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-    {posts.map((post: any) => (
-      <article>
-        <a 
-          href={`/posts/${post.slug}`}
-          class="group block p-6 border-4 border-[var(--border)] rounded-lg bg-[var(--bg)] shadow-[4px_4px_0_0_var(--border)] hover:shadow-[6px_6px_0_0_var(--border)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all h-full flex flex-col"
-        >
-          <div class="aspect-video mb-4 overflow-hidden rounded border-2 border-[var(--border)]">
-            <img 
-              src={post.data.image.url} 
-              alt={post.data.image.alt}
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              loading="lazy"
-            />
-          </div>
-          <h2 class="font-black text-xl mb-2 group-hover:text-[var(--accent)] transition-colors">{post.data.title}</h2>
-          <p class="text-sm opacity-70 mb-3">{post.data.pubDate.toLocaleDateString('en', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-          <p class="line-clamp-3 flex-grow">{post.data.description}</p>
-        </a>
-      </article>
-    ))}
-  </div>
+<BaseLayout pageTitle={`Tagged “${tag}”`}>
+  <PostList posts={posts} base="/posts/" />
+  <p class="mt-10"><a class="back-link" href="/tags/">← All tags</a></p>
 </BaseLayout>
-
-<style>
-  .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-</style>

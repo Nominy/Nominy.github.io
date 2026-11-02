@@ -1,28 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './src/**/*.{astro,html,js,jsx,ts,tsx,md,mdx}',
-    './public/**/*.html',
-  ],
-  darkMode: ['class', '[data-theme="dark"]'],
+  content: ['./src/**/*.{astro,html,js,jsx,ts,tsx,md,mdx}'],
+  darkMode: 'media',
   theme: {
     extend: {
-      colors: {
-        bg: 'var(--bg)',
-        fg: 'var(--fg)',
-        brand: 'var(--brand)',
-        accent: 'var(--accent)',
-      },
-      borderWidth: {
-        3: '3px',
-        5: '5px',
-      },
-      borderRadius: {
-        xl: '1rem',
+      fontFamily: {
+        serif: ['"Source Serif 4 Variable"', 'Georgia', 'Cambria', '"Times New Roman"', 'serif'],
+        sans: ['"Inter Variable"', 'ui-sans-serif', 'system-ui', '-apple-system', '"Segoe UI"', 'sans-serif'],
+        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', '"Liberation Mono"', 'monospace'],
       },
     },
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [],
 };
-
-

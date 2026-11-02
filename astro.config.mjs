@@ -1,11 +1,17 @@
 import { defineConfig } from 'astro/config';
-
-import preact from "@astrojs/preact";
-import tailwind from "@astrojs/tailwind";
+import tailwind from '@astrojs/tailwind';
+import rehypeFigures from './src/lib/rehype-figures.mjs';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [preact(), tailwind()],
-  i18n: { locales: ["en", "ru"], defaultLocale: "en" },
-  site: 'https://www.crystalgate.life',
+  site: 'https://nafty.is-a.dev',
+  integrations: [tailwind()],
+  i18n: { locales: ['en', 'ru'], defaultLocale: 'en' },
+  markdown: {
+    rehypePlugins: [rehypeFigures],
+    shikiConfig: {
+      themes: { light: 'github-light', dark: 'github-dark' },
+      defaultColor: false,
+    },
+  },
 });
