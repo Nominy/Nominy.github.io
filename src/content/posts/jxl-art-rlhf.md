@@ -10,61 +10,22 @@ tags: ["jpeg xl", "rlhf", "generative art", "machine learning"]
 embed: "jxl-blind-test"
 ---
 
-> **The short version**
->
-> I spent two days teaching a tiny model to write JPEG XL art: little programs, a few dozen bytes each, that an image decoder turns into pictures. The model is small enough to run in your browser, which is what the test above is doing. It never saw art made by people. Everything it knows about what looks good, it learned from me clicking left or right on pairs of its pictures, about fourteen hundred times.
->
-> It got better, and in a blind test afterwards I picked its newer pictures 39 times out of 50. Some of its images turned out to look almost exactly like pieces by human artists. Working out why was my favourite part.
+Over two days I trained a small language model (about 3M parameters) to write JPEG XL art, and then tuned it on my own taste by clicking through pairs of its images, 1,442 of them. The thing at the top of this page is that model running in your browser: in each pair, one image comes from the model before I tuned it and one from after. I built all of this with Claude as a coding partner.
+
+The tuned model is clearly better by my taste. In a blind test afterwards I picked it 39 times out of 50. Some of its images also came out almost identical to pieces from the human JXL art gallery, and I'll get to why that happens further down.
 
 ![Twelve hand-picked images from the trained model, each with its checkpoint and byte size.](/posts/jxl-art-rlhf/panel.webp)
-*A few of the model's pictures. Each one is a program of a few dozen bytes.*
+*Some images from the tuned model, with the training step and size of each.*
 
-## Pictures made of rules
+## JXL art
 
-Imagine you get 29 bytes to make a picture. That's not even enough to store ten pixels. The only way to get an image out of it is to write down a rule and let something else do the drawing.
+In case you haven't seen it: JPEG XL's lossless mode predicts every pixel from its neighbours using a small decision tree stored in the file, and then stores the prediction errors. If you write the tree yourself and store no errors, the decoder just draws whatever the tree predicts. People found out in 2021 that this gives you surprisingly nice images in a few dozen bytes, and there's a gallery of 241 of them at [jpegxl.info/art](https://jpegxl.info/art/).
 
-JPEG XL, the image format, has a little rule language built in. When it compresses an image, it guesses each pixel from its neighbours using a tiny decision tree: "on the right half, copy the pixel to the left; everywhere else, average the ones above". Usually the file also stores corrections for every wrong guess. If you leave the corrections out, the decoder simply paints its guesses, and the tree becomes the picture.
+Here's one the model wrote, which I named Neon Chevron:
 
-People have been writing these trees by hand since 2021 and calling it JXL art. There's a lovely gallery of 241 pieces at jpegxl.info, most of them found by fiddling in an online editor until something beautiful appeared. The picture at the top of this post is one my model wrote. I call it Neon Chevron, and it's 29 bytes.
+![Neon Chevron, 29 bytes.](/posts/jxl-art-rlhf/neon_chevron.webp)
 
-## What I wanted to find out
-
-I was curious how far a really small model could get at this with two handicaps. It would never see a program written by a person, so it couldn't copy the gallery. And the only thing telling it what looks good would be me, picking the nicer of two pictures, over and over.
-
-That second part is a miniature of how chatbots get shaped after their main training: people compare two answers and pick the better one, and the model learns from those picks. That's called RLHF, reinforcement learning from human feedback. It's hard to see what those picks teach a big model. Here everything is small enough to look at: every picture, every program, every click.
-
-I built it with Claude as a coding partner, over two days.
-
-## How it went
-
-First the model had to learn the language. I generated 24,000 random programs, which took about three-quarters of an hour, and kept the ones that actually produced a picture. None came from the gallery. After a few minutes of training on those, the model could write working programs about two-thirds of the time, with no taste at all yet.
-
-Then the fun part. A little page on my screen showed two of the model's pictures, and I pressed ← or → for the one I liked. A small helper model learned my taste from those clicks, the main model learned to make pictures the helper thought I'd like, and every 25 clicks I got a fresh batch from the improved model. I started on my desktop PC. When I had chores to do, I moved everything to my MacBook and kept clicking from there.
-
-![The labeling page.](/posts/jxl-art-rlhf/labeling_ui.webp)
-*The page I clicked through 1,442 times. The square cards will come up again later.*
-
-## Did my taste rub off on it?
-
-It did, and not only by my own judgement.
-
-The first thing you notice is that it breaks less. At the start about a third of its programs failed to produce a picture; by the end, one in ten did. Its programs also got shorter while the pictures got richer. By one rough measure it now packs more picture into each byte than the human gallery does.
-
-![Random samples from the starting model, step 0.](/posts/jxl-art-rlhf/evolution_step0.webp)
-*Random pictures from the model before I started clicking.*
-
-![Random samples from the trained model, step 800, same seed.](/posts/jxl-art-rlhf/evolution_step800.webp)
-*Random pictures from the same model near the end.*
-
-There's a known trap with this kind of training. The model only ever hears from the helper model, never from me directly, so it might learn to please the helper and drift away from what I actually like. I checked this a few ways.
-
-I asked an off-the-shelf image model, one that never saw any of my clicks, whether each picture looked more like "a beautiful abstract artwork" or like noise and glitches. It liked the trained model's pictures much more, nearly as much as the human gallery. A version of my helper trained only on my early clicks, before it could have seen any of the later pictures, agreed too. And I hit "both bad" far less often as training went on.
-
-The most direct check was a blind test after training ended. I looked at 50 fresh pairs, each with one picture from the model before training and one from after, shuffled, with no labels until the end. I picked the trained model's picture 39 times out of 50. You can take the same test at the top of this page.
-
-## Taking a 29-byte picture apart
-
-My favourite thing about this setup is that the model's output is a program you can read. So I took my favourite piece, which also happened to be Claude's, and tried to explain every word in it. Then I checked each explanation by changing that word and seeing whether the picture changed the way I expected.
+And here's its whole program, which compiles to 29 bytes:
 
 ```
 Bitdepth 12
@@ -77,136 +38,135 @@ if x > 226
   - Gradient -5
 ```
 
-The program splits the canvas at x = 226 and paints each side with a different rule.
+You can paste it into the [online editor](https://www.januschka.com/jxl-art/?zcode=eNodxzEKgDAMBdA9p_gXKNgWHR1U0FFUcC422kARkQweX3F7rxGNfGmCdbRK_OBdQQPLkfTn1C6wnjrOGsaQWZVJdjyo4VxFgMHMmTeFsf_6O0Th83tJLwomGhg) and press Run.
 
-- **The tip of the chevron is where the two rules meet.** Move the split to 160 and the tip moves with it.
-- **`Gradient -5` draws the glowing diagonals.** Change the 5 and the stripes change, from faint threads to blown-out bands, but the shape stays.
-- **`Select -1` bends the light downward and lets it fade.** On its own it draws almost nothing, because there's nothing bright for it to carry on.
-- **`DeltaPalette` brings all the colour.** Take it away and the picture goes black. **`Bitdepth 12`** gives the deep night sky; at 8 the same program washes out.
-- **`RCT 13` does nothing at all.** Four different values give the same picture. Hold that thought.
+## The setup
+
+I wanted to see whether a really small model could learn to write these without ever seeing the human ones, with my clicks as its only information about what looks good. This is basically RLHF, the method used to tune chat models, at a size where you can look at every single output.
+
+First the model had to learn the language. I wrote a generator that makes random programs and mutates ones that worked, ran it for about 45 minutes, and kept 24,000 programs that compiled to a non-blank image under 256 bytes. I kept the gallery out of this on purpose, for reasons I explain further down. The model uses the Supra2.5-Pico architecture, trained from scratch. After a few minutes of training it wrote working programs about two-thirds of the time, and its images looked like what you'd expect from random programs: noise, checkerboards, stripes.
+
+Then the clicking. I made a small page that shows two images from the current model, and I press left or right, or mark "both bad". A small reward model fits my clicks, and every 25 clicks the language model gets a few RL updates toward what the reward model likes, then I get a new batch. I started on my desktop PC, and when I had chores I moved the run to my MacBook and kept going there. In total that was 1,442 clicks and 820 training steps.
+
+![The labeling page.](/posts/jxl-art-rlhf/labeling_ui.webp)
+*The labeling page. The square cards come up again later.*
+
+## Did it work?
+
+Mostly, yes. Fewer programs broke (36% at the start, 10% at the end), and the images got much more interesting while the programs got slightly shorter (median 32 bytes down to 29).
+
+![Random samples from the starting model, step 0.](/posts/jxl-art-rlhf/evolution_step0.webp)
+*Random samples before tuning.*
+
+![Random samples from the trained model, step 800, same seed.](/posts/jxl-art-rlhf/evolution_step800.webp)
+*Random samples near the end, same seed.*
+
+What I was worried about is that the model would learn to game the reward model instead of getting better. The reward model is just a linear model on CLIP image features, so in principle it's easy to fool. A few things suggest that mostly didn't happen. A separate CLIP-based judge that never saw my clicks also rates the later images higher (0.27 at the start, 0.42 at the end; the human gallery gets 0.47). A reward model fit only on my first 704 clicks, before the later images existed, agrees with the full one. And I clicked "both bad" a lot less as training went on.
+
+After training I also ran a blind test on myself: 50 pairs, one image from before tuning and one from after, shuffled and unlabeled until the end. I picked the tuned model 39 times. It's the same test as the one at the top of this page, so you can check whether you agree with me.
+
+## Reading the programs
+
+Since the outputs are programs, I tried to work out what each part of my favourite one does. That's Neon Chevron, the one above (it was Claude's favourite too). For each token I guessed what it does, changed it, and checked whether the image changed the way I expected:
+
+- The `if x > 226` splits the canvas, and the tip of the chevron sits on that split. Moving the split to 160 moves the tip.
+- `Gradient -5` draws the glowing diagonals. Changing the 5 changes how bright the stripes are (−1 gives faint threads, −20 blows them out) but keeps the shape.
+- `Select -1` continues the stripes coming from the left, bends them down, and fades them. On its own it draws almost nothing, because there's nothing bright for it to continue.
+- `DeltaPalette` is where all the colour comes from. Without it the image is black. `Bitdepth 12` is why it's so dark and saturated; at 8 bits the same program looks washed out.
+- `RCT 13` does nothing. It's a colour transform, and with a palette there's nothing for it to transform. Four different values give the same image.
 
 ![Twelve variants of Neon Chevron.](/posts/jxl-art-rlhf/neon_chevron_ablation.webp)
-*Neon Chevron with one word changed at a time. You can open the original in the [online editor](https://www.januschka.com/jxl-art/?zcode=eNodxzEKgDAMBdA9p_gXKNgWHR1U0FFUcC422kARkQweX3F7rxGNfGmCdbRK_OBdQQPLkfTn1C6wnjrOGsaQWZVJdjyo4VxFgMHMmTeFsf_6O0Th83tJLwomGhg) and press Run.*
+*Neon Chevron with one token changed at a time.*
 
-Another favourite, which I named Fault Line Meadow, works the same way. On one side of a seam, a jittery rule makes chaos. On the other, a calm rule carries that chaos sideways and fades it into a green field. The mossy grain comes from the program drawing a small image and asking the decoder to blow it up eight times.
+Another one I liked, Fault Line Meadow (28 bytes), works the same way. On one side of a split, a very aggressive predictor setting turns into noise. On the other side, a simple "copy the pixel to the left" rule smears that noise sideways and fades it into green. The mossy texture comes from the program drawing a 128×128 image and asking the decoder to upscale it 8×.
 
 ![Eight variants of Fault Line Meadow.](/posts/jxl-art-rlhf/fault_line_meadow_ablation.webp)
-*Fault Line Meadow, taken apart the same way.*
+*Fault Line Meadow with one token changed at a time.*
 
-Once I'd seen that pattern, I kept finding it in the model's best pictures: a seam, with something energetic on one side feeding something calm on the other.
+I kept seeing this pattern in the model's best images: a split, with one side doing something busy and the other side smearing or fading it.
 
-## The fractal that turned out to be a sweet spot
+## The Queen's Fractal
 
-Partway through, I noticed that some of the model's pictures looked a lot like gallery pieces. One in particular looked almost exactly like "The Queen's Fractal", a 21-byte piece by Jon Sneyers, one of the people who created JPEG XL. He never published its code.
-
-The model's version is a different, slightly longer program, and it draws the same image at the same size. More than half of the pixels are identical, and the rest are very close.
+This is the part that got me excited for a while. One of the model's images is nearly identical to "The Queen's Fractal", a 21-byte piece by Jon Sneyers (one of the people behind JPEG XL) whose code was never published. The model's version is a different, 35-byte program. It renders at the same size, and 53% of the pixels match exactly.
 
 ![The model's 35-byte image (left) and The Queen's Fractal, 21 bytes (right).](/posts/jxl-art-rlhf/queens_fractal_pair.webp)
-*The model's version on the left, Jon Sneyers' original on the right.*
+*The model's version (left) and Jon Sneyers' original (right).*
 
-For a moment it looked like the model had rediscovered a human artwork without ever seeing it. Before saying that out loud, I checked how often plain random programs land on the same picture. The answer: about one in 170. And the model made it about as often before training as after.
+Then I checked how often random programs from the training data land on the same image. It's about 1 in 170, and the model made it at roughly the same rate before tuning as after. So it's hard to call this a rediscovery. The image is just easy to hit in this format: Jon found it by hand, random generation finds it by accident, and the model makes it about as often as it always did.
 
-So the more honest story is that this picture is easy to reach in JPEG XL's little language. Jon found it by hand, random programs stumble onto it, and my model makes it at about the rate it always did. I started calling places like this **format sweet spots**: corners of the format where a very short program gives you a rich, structured image. The other look-alikes feel the same way, the same visual idea built from a different program.
+I've been calling these format sweet spots: places in the format where a tiny program produces something rich and structured. The other look-alikes I found look like the same kind of thing, the same visual idea made by a different program, though I haven't measured how often random programs hit those.
 
 ![Model images beside the gallery pieces they resemble.](/posts/jxl-art-rlhf/convergent_pairs.webp)
-*More of the model's pictures beside gallery pieces they resemble.*
+*More of the model's images next to gallery pieces they resemble.*
 
-## What it didn't learn
+## What it learned and didn't
 
-It didn't invent anything new. My clicks changed which of its existing habits it uses, and that's all.
+The tuning didn't teach it anything new. Human artists use splines and multiple layers; those weren't in the training data, and the model never produced them. It also moved away from the techniques artists use most, like deep trees and separate logic per colour channel. Its outputs stayed as close to its training data as they were at the start. My clicks pushed it toward the parts of what it could already do that I liked.
 
-Human artists use some tools my model never touches, like smooth painted curves and stacked layers. Those were never in its training data, and it never found them on its own. Among the tools it did know, it drifted away from the ones artists like most. Its pictures stayed about as close to its random training data as they were on day one. What my clicks did was point it at the parts of that data I liked.
-
-## What it learned from me by accident
-
-My clicks taught it more than I meant to.
-
-Remember `RCT 13`, the word that does nothing? Pictures with it happened to win more often, so the model learned to write it, and by the end most of its programs include it. It's a little superstition, picked up from my clicks.
-
-The labeling page left its mark too. Every picture sat in a square card, so wide and tall pictures showed up smaller, with black bars around them, and I picked them less often. The model learned to prefer squares.
-
-I find these two oddly charming, and they're also a small version of a real problem with RLHF: a model learns whatever the feedback rewards, and the feedback always rewards a bit more than the person giving it intended.
+It also picked up two habits from me that I didn't intend. Programs with an `RCT` line won more often, even though `RCT` does nothing in most of them (see the Neon Chevron test above), and the model ended up putting it in most of its programs. And since the labeling page showed every image in a square card, wide and tall images looked smaller and I picked them less often, so the model learned to prefer square ones. Both are small examples of the usual RLHF problem: the model learns whatever the feedback rewards, including things you didn't mean to reward.
 
 ![Top images by the learned taste model, step 820.](/posts/jxl-art-rlhf/best_by_taste.webp)
-*The pictures my helper model likes best.*
+*The tuned model's best images according to the reward model.*
 
 ![Top images by the independent CLIP judge, step 820.](/posts/jxl-art-rlhf/best_by_clip.webp)
-*The pictures the outside judge likes best.*
+*Its best images according to the separate CLIP judge.*
 
 ![Liked images that are least like their training data and the gallery, step 820.](/posts/jxl-art-rlhf/most_unique_liked.webp)
-*Pictures I liked that look least like anything in the training data or the gallery.*
+*Images I liked that are least similar to the training data and the gallery.*
 
-## Things that went wrong
+## What went wrong
 
-This post makes it sound smoother than it was. The first attempt went sideways in a couple of instructive ways.
-
-**The first model copied.** In my first try, the training data included edited versions of gallery pieces. The model learned to make near-copies of them, and I kept picking those, because gallery pieces are the good ones and resemblance looked like quality. At one point most of what I was shown was close to something in the gallery. Once I measured it, I threw that model away and started over without the gallery.
+The first version of this copied the gallery. I had included edited gallery pieces in the training data, the model learned to make near-copies of them, and I kept picking those because gallery pieces are good. At one point 64% of what I was shown was close to a gallery piece. I only noticed once I measured it, so I threw that model away and rebuilt the data without the gallery.
 
 ![Version-1 outputs (left of each pair) beside the gallery pieces they copied.](/posts/jxl-art-rlhf/v1_copies.webp)
-*First-attempt pictures (left in each pair) next to the gallery pieces they were copying.*
+*First-version outputs (left of each pair) next to the gallery pieces they copied.*
 
-**It got stuck on one idea.** At one point the first model made the same pattern in the same colours over and over. I rolled it back and changed the setup so that each batch showed me the most varied pictures it could find. A milder version of this crept back near the end of the second run, as a woven teal, red and black pattern.
+The first version also collapsed into making more or less one image in one palette. I rolled it back, added a penalty for look-alike images within a batch, and changed the batches to show me the most varied samples. A milder version came back near the end of the second run, as a teal, red and black woven pattern.
 
 ![Version-1 samples during the collapse.](/posts/jxl-art-rlhf/collapse.webp)
-*The first model, stuck on one idea.*
+*First-version samples during the collapse.*
 
-**Smaller bumps.** The model started from scratch because starting from its English-language weights made it worse at this. My helper model stopped getting sharper after about 500 clicks, which caps how far this setup can go. And at one point training crawled at a twentieth of its speed because I had two jobs and a browser open at once and the graphics card ran out of memory.
+Smaller things: starting from the model's English pretrained weights was worse than starting from scratch. The reward model stopped getting more accurate after about 500 clicks, which is probably the main limit of this setup. And at one point training got 20× slower because two jobs and a browser didn't fit in GPU memory together and Windows quietly started using system RAM.
 
-## What I think this shows
+## Caveats
 
-The exciting headline would be "a tiny model learned to think like JXL artists", and I don't think that's true here. It never used the artists' tools, it moved away from their techniques, and it lands on their most famous look-alike no more often than random programs do. What I saw is a model being steered, by one person's taste, toward particular places it could already reach.
+It would be nice to say the model learned to think like JXL artists, but I don't think the evidence supports that. It never used their tools, it moved away from their techniques, and it makes the Queen's Fractal look-alike no more often than random programs do. What I think it shows is my taste steering the model around inside what random programs can already reach, and the format having a few spots that everyone ends up in.
 
-The idea I'm left with is the sweet spots. JPEG XL's little language seems to have a few places where tiny programs make rich pictures, and artists, random search and a taste-guided model all end up there. When very different programs arrive at the same picture, that says something about the format itself.
+The blind test has obvious problems. I'm the one who trained the model, so it only says the model moved toward my taste, and after 1,400 clicks I might recognise its style. I'd be curious whether other people pick the same way.
 
-The blind test has two catches. I'm the person whose clicks trained the model, so it only shows the model moved toward my taste. And after fourteen hundred clicks I might recognise its style, so the test hides the labels but maybe not the style. I'd love to know whether other people pick the same way.
+## Links
 
-## Play with it
+- The blind test with 10 rounds: [nafty.is-a.dev/jxl-blind-test](/jxl-blind-test/)
+- Code: [github.com/Nominy/jxl-art-rlhf](https://github.com/Nominy/jxl-art-rlhf)
+- Every checkpoint, click and image from the run: [huggingface.co/Nafty/jxl-art-rlhf](https://huggingface.co/Nafty/jxl-art-rlhf)
+- The human gallery: [jpegxl.info/art](https://jpegxl.info/art/), and the [online editor](https://www.januschka.com/jxl-art/)
 
-The test at the top of this post also has its own page with more rounds: [nafty.is-a.dev/jxl-blind-test](/jxl-blind-test/). Everything runs on your device.
+Things I'd like to try next: blind tests with people other than me, adding splines and layers to the training data, a labeling page that shows images at their real aspect ratio, and base rates for the other look-alikes.
 
-The code is at [github.com/Nominy/jxl-art-rlhf](https://github.com/Nominy/jxl-art-rlhf). Every checkpoint, every click and every picture shown during training is at [huggingface.co/Nafty/jxl-art-rlhf](https://huggingface.co/Nafty/jxl-art-rlhf). The human gallery lives at [jpegxl.info/art](https://jpegxl.info/art/), and you can write your own pieces in the [online editor](https://www.januschka.com/jxl-art/).
+## Details
 
-Things I'd like to try next: blind tests with people other than me, giving the model curves and layers so it can reach the tools artists use, a labeling page that shows pictures at their real shape, and checking how easy the other look-alikes are to reach by chance.
+For anyone who wants the numbers.
 
-## For the curious: methods and numbers
+**Model and data.** Supra2.5-Pico architecture (SupraLabs, Apache-2.0), 2,982,480 parameters, 10 layers, trained from scratch; starting from its English weights gave 41% usable images against 57% from scratch. Programs compiled with libjxl v0.12.0 `jxl_from_tree`; a program counts if it compiles, decodes, is at most 256 bytes and isn't blank. The 24,000 training programs are 18% fresh from the grammar and 82% mutations of earlier ones, deduplicated by text and image, median 35 bytes. A filter for anything within 0.8 similarity of a gallery program never triggered.
 
-Everything above, with the details and numbers left in.
+**RLHF loop.** The reward model is Bradley–Terry, linear on CLIP ViT-B/32 features plus a few image statistics, refit after every click. Every 25 clicks: 20 policy-gradient steps (batch 64, lr 3e-5, KL penalty 0.05 to the starting model, leave-one-out baseline), then a new batch of the 32 most varied out of about 120 samples. The reward also penalises look-alikes within a batch, near-copies of the gallery, and broken output. The reward model's held-out accuracy levelled off at 0.69–0.72. Steps 0–120 ran in PyTorch on an RTX 5060 Ti, the rest on a MacBook Air through an MLX port of the same model.
 
-### How it was built
+**Before and after** (256 samples per checkpoint, same seed; the CLIP judge picks between "a beautiful abstract digital artwork" and prompts like "random noise" or "a blank screen"):
 
-**Model.** Supra2.5-Pico by SupraLabs (Apache-2.0): a 2,982,480-parameter transformer with 10 layers, trained from scratch. Starting from its English weights gave 41% usable pictures against 57% from scratch.
-
-**Programs.** Tree programs compiled with libjxl v0.12.0's `jxl_from_tree`. A program counts if it compiles, decodes, is at most 256 bytes and isn't blank.
-
-**Training data.** 24,000 programs made in 43 minutes, 18% drawn fresh from the grammar and 82% small mutations of earlier ones, with duplicates removed. Anything within 0.8 similarity of a gallery program would have been thrown out; none came up. Median size 35 bytes.
-
-**The clicking loop.** I could pick left, right, "equal" or "both bad". The helper (a Bradley–Terry model on CLIP image features) refit after every click. Every 25 clicks the model took 20 small policy-gradient steps, kept close to where it started by a KL penalty, and the next batch showed the 32 most varied of about 120 fresh pictures. The reward also penalised look-alikes within a batch, near-copies of the gallery, and broken output.
-
-**Machines.** Training started on my Windows PC with an RTX 5060 Ti. From step 120 on it ran on a MacBook Air, using an Apple MLX version of the same model that gives the same outputs within rounding. The run moved between the two through Hugging Face.
-
-### Before and after
-
-256 samples per checkpoint. The outside judge is CLIP choosing between "a beautiful abstract digital artwork" and prompts like "random noise", "a blank screen" and "a glitchy corrupted image".
-
-| | random training programs | human gallery | start | step 400 | step 820 |
+| | random training programs | human gallery | step 0 | step 400 | step 820 |
 |---|---|---|---|---|---|
-| usable pictures | – | – | 64% | 84% | **90%** |
-| helper's score (median) | −0.35 | 0.85 | −0.27 | 0.05 | **0.69** |
-| outside judge, P("beautiful artwork") | 0.27 | 0.47 | 0.27 | 0.34 | **0.42** |
-| picture detail (PNG KB at 256 px) | 34 | 61 | 24 | 21 | **50** |
-| PNG bytes per program byte | 913 | 1,562 | 849 | 743 | **1,737** |
-| program size (median bytes) | 35 | 32 | 32 | 31 | **29** |
-| near-copies of gallery programs | 0% | – | 0% | 0% | **0%** |
+| usable images | – | – | 64% | 84% | 90% |
+| reward model, median z | −0.35 | 0.85 | −0.27 | 0.05 | 0.69 |
+| CLIP judge | 0.27 | 0.47 | 0.27 | 0.34 | 0.42 |
+| PNG bytes per program byte | 913 | 1,562 | 849 | 743 | 1,737 |
+| median program size (bytes) | 35 | 32 | 32 | 31 | 29 |
+| near-copies of gallery programs | 0% | – | 0% | 0% | 0% |
 
-A helper trained only on my first 704 clicks scores the pictures −0.14 at the start and +0.69 at step 800. "Both bad" went from 45% of my picks at the start to about 16% from step 300 on.
+The reward model fit on the first 704 clicks gives −0.14 at step 0 and +0.69 at step 800. "Both bad" went from 45% of my clicks at the start to about 16% after step 300.
 
-### The blind test
+**Blind test.** 50 pairs sampled once and frozen, sides shuffled. Tuned 39, untuned 11, no ties: 78%, 95% interval 64–88%, binomial p = 9×10⁻⁵. The pairs and votes are on Hugging Face under `reports/blind-ab`.
 
-50 pairs, sampled once and frozen, sides shuffled, sources hidden. The trained model won 39, the starting model 11, no ties. That's 78%, with a 95% interval of 64–88% (exact binomial p = 9×10⁻⁵). The pairs and my votes are on Hugging Face under `reports/blind-ab`.
-
-### The Queen's Fractal
-
-The model's 35-byte program against Jon's 21 bytes: 53% of pixels identical at 1024×1024, average difference 10 out of 255.
+**Queen's Fractal.** Same 1024×1024 size, 53% of pixels identical, mean difference 10/255. The model's program:
 
 ```
 Bitdepth 10
@@ -221,33 +181,18 @@ if W+N-NW > 8
     - Set 324
 ```
 
-| | pictures that look like The Queen's Fractal |
-|---|---|
-| random training programs | 0.6% (about 1 in 170) |
-| model at the start | 1.7% |
-| model after training | 1.4% |
+Share of images that look like it (CLIP similarity ≥ 0.95): random training programs 0.6%, model before tuning 1.7%, after 1.4%. Other look-alikes: "Waterfall Brushes" (Halcyon), "melting crystal" and "Shattered palette" (CrushedAsian255), "Chromatic Stripes" (dogelition). No model program came within 0.8 similarity of a gallery program; the closest was 0.64.
 
-Other look-alikes: "Waterfall Brushes" (Halcyon), "melting crystal" and "Shattered palette" (CrushedAsian255), "Chromatic Stripes" (dogelition). None of the model's programs came within 0.8 similarity of a gallery program; the closest was 0.64.
+**Techniques**, share of programs:
 
-### Techniques
-
-| technique | human gallery | start | step 400 | step 820 |
+| | human gallery | step 0 | step 400 | step 820 |
 |---|---|---|---|---|
 | separate logic per colour channel | 45% | 43% | 25% | 17% |
 | deep trees | 21% | 12% | 2% | 1% |
-| curves (splines) | 7% | 0% | 0% | 0% |
+| splines | 7% | 0% | 0% | 0% |
 | layers | 1% | 0% | 0% | 0% |
 | `Weighted` predictor | 16% | 12% | 8% | 19% |
 
-### What my clicks rewarded
+**What my clicks rewarded.** Programs with `RCT` won 42% of comparisons, without 31%; by the end the model writes it in 72–85% of programs. Non-square images won 30%, square ones 41%.
 
-| | won with it | won without it |
-|---|---|---|
-| `RCT` in the program | 42% | 31% |
-| non-square picture | 30% | 41% |
-
-The model writes `RCT` in 72–85% of its programs by the end.
-
-### The first attempt, in numbers
-
-35% of the first training set were edits of gallery pieces. 42% of that model's programs were near-copies, and near-copies made up 64% of what I saw at the peak. They won 37% of my comparisons against 15% for original-looking ones. The collapse pushed the similarity between pictures in a batch from 0.81 to 0.93.
+**First version.** 35% of its training programs were edits of gallery pieces, 42% of its outputs were near-copies, and near-copies won 37% of my comparisons against 15% for the rest. During the collapse, similarity between images in a batch went from 0.81 to 0.93.
