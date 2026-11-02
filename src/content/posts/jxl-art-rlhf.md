@@ -266,6 +266,8 @@ One check is still open: a blind A/B test of the starting model against the trai
 
 Every checkpoint, the snapshots at 5-step intervals, every pick, every image shown and the logs are public at https://huggingface.co/Nafty/jxl-art-rlhf. The code, including the evaluation script `python -m jxlart.evaluate`, is at https://github.com/Nominy/jxl-art-rlhf. The human gallery is at https://jpegxl.info/art/ and the online editor at https://www.januschka.com/jxl-art/.
 
+You can run the blind comparison yourself at [nafty.is-a.dev/jxl-blind-test](/jxl-blind-test/). Both checkpoints run in your browser (3M parameters, about 6 MB each as float16), and libjxl runs as WebAssembly. You pick from 10 pairs and then see which model you sided with.
+
 ## What's next
 
 - The blind A/B test above.

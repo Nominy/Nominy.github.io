@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Blind test: JPEG XL art before and after RLHF';
+const description =
+  'Pick the image you like from pairs generated on your device by a 3M-parameter model, before and after RLHF on one person\'s picks, then see which model you sided with.';
+---
+
+<BaseLayout pageTitle={title} description={description} image="/posts/jxl-art-rlhf/neon_chevron.webp"
+  imageAlt="Neon Chevron: glowing diagonal light trails folding at a sharp tip on black" fullWidth hideTitle>
+  <div class="blind-page">
+    <div class="prose">
+      <h1 class="page-title">{title}</h1>
+      <p>
+        Each round shows two images. Each one is a JPEG XL tree program of at most 256 bytes, written by a
+        3M-parameter model running in your browser and compiled by libjxl as WebAssembly. One image comes from the
+        model before RLHF, the other from the same model after 820 RLHF steps on one person's 1,442 picks. Pick the
+        one you like. After 10 rounds you see which was which.
+      </p>
+      <p class="ui muted text-base">
+        How the model was trained, and what this test can and can't tell you:
+        <a href="/posts/jxl-art-rlhf/">the write-up</a>. Code:
+        <a href="https://github.com/Nominy/jxl-art-rlhf">github.com/Nominy/jxl-art-rlhf</a>.
+      </p>
+    </div>
+    <div id="blind-game" class="ui"></div>
+  </div>
+  <link rel="stylesheet" href="/jxl-blind-test/style.css" />
+  <script is:inline type="module" src="/jxl-blind-test/app.js"></script>
+</BaseLayout>
+
+<style>
+  .blind-page {
+    width: min(var(--wide), 100% - 2 * var(--gutter));
+    margin-inline: auto;
+  }
+  .blind-page .prose {
+    max-width: var(--content);
+    margin-inline: auto;
+  }
+</style>
